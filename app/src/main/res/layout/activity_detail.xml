@@ -20,14 +20,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/screenName"
+            android:layout_toRightOf="@id/profilePic"
+            android:layout_below="@id/name"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tweetBody"
+            android:layout_below="@id/profilePic"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 </layout>

@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -12,27 +13,45 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import static android.R.attr.id;
-import static com.raizlabs.android.dbflow.config.FlowLog.Level.D;
+import static android.media.CamcorderProfile.get;
 
 /**
  * Created by Gauri Gadkari on 3/21/17.
  */
-
+@Parcel
 public class Tweet {
-    DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-    public Date date = new Date();
+    public String imageUrl = "";
+    public String videoUrl = "";
+    public String body;
+    public long id;
+    public User user;
+    public String createdAt;
+    public String expandedMediaUrl = "";
+
+
+    public String getType() {
+        return type;
+    }
+
+    public String type = "simple";
+
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
     public String getBody() {
         return body;
     }
-
     public long getId() {
         return id;
     }
-
+    public Tweet(){
+    }
     public String getCreatedAt() {
         Date created = null;
         String result;
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        Date date = new Date();
         long diff = 0, diffSeconds = 0, diffMinutes = 0, diffHours = 0;
         try {
             created = dateFormat.parse(createdAt);
@@ -59,10 +78,14 @@ public class Tweet {
 
     }
 
-    private String body;
-    private long id;
-    private User user;
-    private String createdAt;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getExpandedMediaUrl() {
+        return expandedMediaUrl;
+    }
+
     public User getUser() {
         return user;
     }
@@ -91,6 +114,25 @@ public class Tweet {
             tweet.id = jsonObject.getLong("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+            //tweet.expandedMediaUrl =
+            //Log.d("DEBUG", (jsonObject.getJSONObject("entities")).toString());
+                    //.getJSONArray("media")[0]);
+            if((jsonObject.getJSONObject("entities").has("media"))){
+                //Log.d("Debug",((jsonObject.getJSONObject("entities").getJSONArray("media").get(0)).toString()));
+                JSONArray media =jsonObject.getJSONObject("extended_entities").getJSONArray("media");
+                tweet.expandedMediaUrl = media.getJSONObject(0).getString("expanded_url");
+                String mediaUrl = media.getJSONObject(0).getString("media_url");
+                tweet.type = media.getJSONObject(0).getString("type");
+                //Log.d("Debug",url.toString());
+
+                if(tweet.type.equals("photo")) {
+                    tweet.imageUrl = mediaUrl;
+                }
+                if(tweet.type.equals("video")){
+                    String url = media.getJSONObject(0).getJSONObject("video_info").getJSONArray("variants").getJSONObject(0).getString("url");
+                    tweet.videoUrl = url;
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

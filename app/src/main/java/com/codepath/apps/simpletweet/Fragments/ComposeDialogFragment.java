@@ -36,12 +36,16 @@ import cz.msebera.android.httpclient.Header;
  * Created by Gauri Gadkari on 3/21/17.
  */
 
-public class ComposeTweet extends DialogFragment {
+public class ComposeDialogFragment extends DialogFragment {
     TweetComposeBinding binding;
+    ComposeTweetListener listener;
     TwitterClient twitterClient;
     ArrayList<Tweet> tweets;
     TimelineActivity timelineActivity;
     private TweetAdapter tweetAdapter;
+    public interface ComposeTweetListener {
+        public void tweetClickHandler(String tweetBody);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class ComposeTweet extends DialogFragment {
         return view;
 
     }
+
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -91,12 +96,18 @@ public class ComposeTweet extends DialogFragment {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timelineActivity = new TimelineActivity();
+
                 String tweetBody = composeTweet.getText().toString();
-                timelineActivity.tweet(tweetBody);
+                listener.tweetClickHandler(tweetBody);
 
                 getDialog().dismiss();
             }
         });
+    }
+
+    public static ComposeDialogFragment newInstance(ComposeTweetListener listener){
+        ComposeDialogFragment composeDialogFragment = new ComposeDialogFragment();
+        composeDialogFragment.listener = listener;
+        return composeDialogFragment;
     }
 }
