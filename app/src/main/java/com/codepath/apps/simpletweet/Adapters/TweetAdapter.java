@@ -22,6 +22,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 /**
@@ -70,7 +71,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "hi", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "hi", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("tweet", Parcels.wrap(currentTweet));
                 context.startActivity(intent);

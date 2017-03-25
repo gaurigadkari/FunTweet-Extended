@@ -1,6 +1,8 @@
 package com.codepath.apps.simpletweet.Activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -11,24 +13,29 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
 import com.codepath.apps.simpletweet.Fragments.ComposeDialogFragment;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
+import com.codepath.apps.simpletweet.Utils.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.simpletweet.Utils.Utilities;
 import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
 import com.codepath.apps.simpletweet.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import Utils.EndlessRecyclerViewScrollListener;
+
 import cz.msebera.android.httpclient.Header;
 
 import static android.media.CamcorderProfile.get;
@@ -46,9 +53,24 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_timeline);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+
+                // Make sure to check whether returned data will be null.
+                String titleOfPage = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+                String urlOfPage = intent.getStringExtra(Intent.EXTRA_TEXT);
+                Uri imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            }
+        }
+
+            //setContentView(R.layout.activity_timeline);
         client = TwitterApplication.getRestClient();
-        populateTimeline();
+
+        //Log.d(TimelineActivity.class.getName(), tweetList.size()+"");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
         Toolbar toolbar = binding.toolbar;
                 //(Toolbar) findViewById(R.id.toolbar);
@@ -61,6 +83,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         }
         swipeContainer = binding.swipeContainer;
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
             @Override
             public void onRefresh() {
                 //Toast.makeText(TimelineActivity.this, "hello", Toast.LENGTH_LONG).show();
@@ -69,6 +92,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
                 // once the network request has completed successfully.
                 populateTimeline();
             }
+
         });
 
         RecyclerView rvTimeline = binding.timeline;
@@ -89,7 +113,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(this, tweets);
         rvTimeline.setAdapter(tweetAdapter);
-
+        populateTimeline();
         FloatingActionButton fab = binding.fab;
                 //
                 //(FloatingActionButton) findViewById(R.id.fab);
@@ -102,6 +126,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
                 composeTweetFragment.show(fm, "Tweet");
             }
         });
+
+
     }
 
     @Override
@@ -118,6 +144,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
                 tweets.addAll(Tweet.fromJSONArray(response));
                 tweetAdapter.notifyDataSetChanged();
 
+
             }
 
             @Override
@@ -130,7 +157,19 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
     }
 
     private void populateTimeline() {
-        client.getHomeTimeline(false, Long.valueOf(1), new JsonHttpResponseHandler() {
+
+        if (!(Utilities.isNetworkAvailable(this) && Utilities.isOnline())) {
+            List<Tweet> tweetList = SQLite.select().
+                    from(Tweet.class).queryList();
+
+            //tweets.clear();
+            tweets.addAll(tweetList);
+            Collections.reverse(tweets);
+            tweetAdapter.notifyDataSetChanged();
+            swipeContainer.setRefreshing(false);
+
+        } else {
+            client.getHomeTimeline(false, Long.valueOf(1), new JsonHttpResponseHandler() {
             //Success
 
             @Override
@@ -147,9 +186,10 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorObj) {
-                Log.d("DEBUG", errorObj.toString());
+                //Log.d("DEBUG", errorObj.toString());
             }
         });
+    }
     }
 
     public void tweet(String tweetBody){
@@ -160,7 +200,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("DEBUG", response.toString());
-                tweets.clear();
+                //tweets.clear();
                 tweets.add(0, Tweet.fromJson(response));
                 tweetAdapter.notifyDataSetChanged();
 

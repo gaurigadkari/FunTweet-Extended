@@ -2,6 +2,14 @@ package com.codepath.apps.simpletweet.models;
 
 import android.util.Log;
 
+import com.codepath.apps.simpletweet.MyDatabase;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,14 +26,25 @@ import static android.media.CamcorderProfile.get;
 /**
  * Created by Gauri Gadkari on 3/21/17.
  */
-@Parcel
-public class Tweet {
+@Table(database = MyDatabase.class)
+@Parcel(analyze={Tweet.class})
+public class Tweet extends BaseModel {
+    @Column
     public String imageUrl = "";
+    @Column
     public String videoUrl = "";
+    @Column
     public String body;
+    @Column
+    @PrimaryKey
     public long id;
+    @Column
+    @ForeignKey
+    @ForeignKeyReference(columnName = "uid", foreignKeyColumnName = "uid")
     public User user;
+    @Column
     public String createdAt;
+    @Column
     public String expandedMediaUrl = "";
 
 
@@ -133,6 +152,7 @@ public class Tweet {
                     tweet.videoUrl = url;
                 }
             }
+            tweet.save();
         } catch (JSONException e) {
             e.printStackTrace();
         }

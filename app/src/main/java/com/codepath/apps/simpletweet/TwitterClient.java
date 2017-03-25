@@ -10,6 +10,8 @@ import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import static com.codepath.apps.simpletweet.R.id.tweetBody;
+
 /*
  * 
  * This is the object responsible for communicating with a REST API. 
@@ -67,7 +69,15 @@ public class TwitterClient extends OAuthBaseClient {
 
         getClient().post(apiUrl, params, handler);
     }
+    public void postReplyTweet(String replyToUserName, Long tweetId, String tweetBody, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("statuses/update.json");
+        RequestParams params = new RequestParams();
+        params.put("status",tweetBody);
+        params.put("in_reply_to_status_id", tweetId);
+        params.put("in_reply_to_screen_name" , replyToUserName);
 
+        getClient().post(apiUrl, params, handler);
+    }
 	//compose tweet
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");

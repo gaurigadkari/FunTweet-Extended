@@ -6,5 +6,6 @@
     <string name="title_activity_timeline">TimelineActivity</string>
     <string name="tweet">tweet</string>
     <string name="whats_happening">What\'s happening?</string>
+    <string name="reply">Reply</string>
 
 </resources>

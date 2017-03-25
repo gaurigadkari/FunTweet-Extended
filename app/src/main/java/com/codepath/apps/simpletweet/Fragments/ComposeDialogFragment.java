@@ -1,6 +1,13 @@
 package com.codepath.apps.simpletweet.Fragments;
 
+import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -12,9 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.codepath.apps.simpletweet.Activities.TimelineActivity;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
@@ -31,6 +41,9 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static com.codepath.apps.simpletweet.R.id.composeTweet;
+
 
 /**
  * Created by Gauri Gadkari on 3/21/17.
@@ -43,9 +56,58 @@ public class ComposeDialogFragment extends DialogFragment {
     ArrayList<Tweet> tweets;
     TimelineActivity timelineActivity;
     private TweetAdapter tweetAdapter;
+    String tweetBody = "";
+    EditText composeTweet;
+    Context context;
     public interface ComposeTweetListener {
         public void tweetClickHandler(String tweetBody);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        tweetBody = composeTweet.getText().toString();
+        if(tweetBody.equals("")){
+            dialog.dismiss();
+        } else {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setMessage("Save Draft?");
+        alertDialog.setCancelable(false);
+        //Toast.makeText(getContext(), "Save", Toast.LENGTH_LONG).show();
+
+        alertDialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                dismiss();
+
+            }
+        });
+
+        alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+
+                SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("tweet", tweetBody);
+                editor.commit();
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.show();
+    }}
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,24 +131,35 @@ public class ComposeDialogFragment extends DialogFragment {
         twitterClient = new TwitterClient(getContext());
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(getContext(), tweets);
-        final EditText composeTweet = binding.composeTweet;
+        composeTweet = binding.composeTweet;
         Button btnTweet = binding.btnTweet;
+
         final TextView charactersRemaining = binding.charactersRemaining;
-        composeTweet.addTextChangedListener(new TextWatcher()
-        {
+        context = getActivity();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
+        String draftTweet = sharedPreferences.getString("tweet", "");
+        if(!(draftTweet.equals(""))){
+            composeTweet.setText(draftTweet);
+        }
+
+        composeTweet.post(new Runnable() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(composeTweet, 0);
+            }
+        });
+        composeTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int aft)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int aft) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 // this will show characters remaining
                 int charRemaining = 140 - s.length();
                 charactersRemaining.setText(charRemaining + "");
@@ -97,7 +170,7 @@ public class ComposeDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
 
-                String tweetBody = composeTweet.getText().toString();
+                tweetBody = composeTweet.getText().toString();
                 listener.tweetClickHandler(tweetBody);
 
                 getDialog().dismiss();
@@ -105,7 +178,7 @@ public class ComposeDialogFragment extends DialogFragment {
         });
     }
 
-    public static ComposeDialogFragment newInstance(ComposeTweetListener listener){
+    public static ComposeDialogFragment newInstance(ComposeTweetListener listener) {
         ComposeDialogFragment composeDialogFragment = new ComposeDialogFragment();
         composeDialogFragment.listener = listener;
         return composeDialogFragment;
