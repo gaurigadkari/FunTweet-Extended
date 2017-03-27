@@ -2,6 +2,7 @@ package com.codepath.apps.simpletweet.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,17 +18,20 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweet.Activities.DetailActivity;
 import com.codepath.apps.simpletweet.R;
+import com.codepath.apps.simpletweet.Utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweet.models.Tweet;
 import android.widget.MediaController;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static android.os.Build.VERSION_CODES.M;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 /**
@@ -100,6 +104,26 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         .placeholder(R.drawable.ic_launcher)
                         .into(simpleHolder.profilePic);
 
+                new PatternEditableBuilder().
+                        addPattern(Pattern.compile("\\@(\\w+)"), R.color.twitterBlue,
+                                new PatternEditableBuilder.SpannableClickedListener() {
+                                    @Override
+                                    public void onSpanClicked(String text) {
+                                        Toast.makeText(context, "Clicked username: " + text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }).into(simpleHolder.tweet);
+
+                new PatternEditableBuilder().
+                        addPattern(Pattern.compile("\\#(\\w+)"), R.color.twitterBlue,
+                                new PatternEditableBuilder.SpannableClickedListener() {
+                                    @Override
+                                    public void onSpanClicked(String text) {
+                                        Toast.makeText(context, "Clicked username: " + text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }).into(simpleHolder.tweet);
+
                 break;
             case tweetWithImage:
                 TweetImageViewHolder imageHolder = (TweetImageViewHolder) holder;
@@ -154,6 +178,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public int getItemCount() {
         return tweets.size();
     }
+
 
     @Override
     public int getItemViewType(int position) {

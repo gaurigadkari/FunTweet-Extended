@@ -52,6 +52,35 @@
             android:layout_toRightOf="@id/profilePic"
             android:textSize="14sp"
             android:autoLink="all"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout"
+            android:layout_below="@id/tweet"
+            android:layout_marginTop="4dp">
+
+        <ImageView
+            android:id="@+id/btnReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vector_reply_activity"
+            android:text="@string/reply"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/btnRetweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vector_retweet_activity"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:id="@+id/btnLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vector_heart_activity"
+            android:layout_weight="1"/>
+    </LinearLayout>
     </RelativeLayout>
 
 
