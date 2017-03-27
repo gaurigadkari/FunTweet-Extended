@@ -53,6 +53,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
         tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
         //User user = (User) Parcels.unwrap(getIntent().getParcelableExtra("tweet"))
         ImageView profileImage = binding.profilePic;
@@ -73,10 +75,11 @@ public class DetailActivity extends AppCompatActivity {
 //        ImageView tweetImageReply = binding.tweetImageReply;
 //        VideoView tweetVideoReply = binding.tweetVideoReply;
 //        RelativeLayout tweetReplyContainer = binding.tweetReplyContainer;
-        RecyclerView recyclerView = binding.replies;
+        final RecyclerView recyclerView = binding.replies;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         //linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
         replyTweets = new ArrayList<>();
         replyTweetAdapter = new TweetAdapter(this, replyTweets);
         recyclerView.setAdapter(replyTweetAdapter);
@@ -103,7 +106,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 replyContainer.setVisibility(View.VISIBLE);
                 Boolean enable = replyTweet.isEnabled();
-                replyTweet.setText("@" + tweet.getUser().getScreenName());
+                replyTweet.setText("@" + tweet.getUser().getScreenName() +" ");
                 Log.d("Debug", enable.toString());
 
             }
@@ -112,9 +115,9 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String reply = replyTweet.getText().toString();
-
+                recyclerView.setVisibility(View.VISIBLE);
                 replyToTweet(reply);
-                replyTweet.setText("");
+                replyTweet.setText("@" + tweet.getUser().getScreenName()+" ");
             }
         });
         name.setText(tweet.getUser().getName());

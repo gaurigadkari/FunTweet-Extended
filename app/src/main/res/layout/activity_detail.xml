@@ -4,13 +4,13 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border"
-                android:orientation="vertical"
                 android:padding="8dp"
                 app:cardCornerRadius="10dp">
 
@@ -74,29 +74,56 @@
                             android:visibility="gone" />
                     </RelativeLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/linearLayout"
+                        android:layout_below="@id/tweetContainer"
+
+                        >
                     <ImageView
                         android:id="@+id/btnReply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tweetContainer"
                         android:src="@drawable/ic_vector_reply_activity"
-                        android:text="@string/reply" />
+                        android:text="@string/reply"
+                        android:layout_weight="1"/>
+                        <ImageView
+                            android:id="@+id/btnRetweet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:src="@drawable/ic_vector_retweet_activity"
+                            android:layout_weight="1"
+                            />
+                        <ImageView
+                            android:id="@+id/btnLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:src="@drawable/ic_vector_heart_activity"
+                            android:layout_weight="1"></ImageView>
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/replies"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/container"></android.support.v7.widget.RecyclerView>
+                    android:layout_below="@id/container"
+                    android:visibility="gone">
+
+                </android.support.v7.widget.RecyclerView>
 
                 <RelativeLayout
                     android:id="@+id/replyContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/replies"
                     android:layout_margin="10dp"
                     android:visibility="gone">
 
@@ -105,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autoLink="all"
-                        android:lines="3"
+                        android:lines="2"
                         android:linksClickable="true"
                         android:maxLength="140" />
 
@@ -116,7 +143,9 @@
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/replyText"
                         android:layout_margin="8dp"
-                        android:text="@string/reply" />
+                        android:text="@string/reply"
+                        android:textColor="#ffffff"
+                        android:background="@android:color/holo_blue_light"/>
 
                     <TextView
                         android:id="@+id/charactersRemaining"
@@ -124,12 +153,12 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/replyText"
                         android:layout_toLeftOf="@id/btnSendReply"
-
+                        android:layout_marginTop="12dp"
                         />
                 </RelativeLayout>
 
 
-            </LinearLayout>
+            </RelativeLayout>
         </ScrollView>
 
 

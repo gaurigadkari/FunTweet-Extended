@@ -3,4 +3,7 @@
     <color name="borderColor">#EEEEEE</color>
     <color name="primaryText">#000000</color>
     <color name="secondaryText">#78909C</color>
+    <color name="twitterBlue">@android:color/holo_blue_light</color>
+    <color name="blueBackgroud">#aa33b5e5</color>
+    <color name="white">#FFFFFF</color>
 </resources>

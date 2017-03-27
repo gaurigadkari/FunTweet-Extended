@@ -63,6 +63,8 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
+    compile 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
+
 
 
 }

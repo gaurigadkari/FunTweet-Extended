@@ -41,6 +41,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.R.attr.animation;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.codepath.apps.simpletweet.R.id.composeTweet;
 
@@ -66,6 +67,8 @@ public class ComposeDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+        //getDialog().getWindow().setWindowAnimations(
+               // R.style.dialog_slide_animation);
         Dialog dialog = getDialog();
         if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -88,6 +91,10 @@ public class ComposeDialogFragment extends DialogFragment {
         alertDialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
+                SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("tweet", "");
+                editor.commit();
                 dismiss();
 
             }
@@ -141,6 +148,8 @@ public class ComposeDialogFragment extends DialogFragment {
         composeTweet.setText(tweetBody);
         if(!(draftTweet.equals(""))){
             composeTweet.setText(draftTweet);
+            int charRemaining = 140 - composeTweet.getText().length();
+            charactersRemaining.setText(charRemaining + "");
         }
 
         composeTweet.post(new Runnable() {
