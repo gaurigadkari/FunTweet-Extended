@@ -1,131 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent" android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:padding="8dp"
-            app:cardCornerRadius="10dp"
-            android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:id="@+id/container"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                >
-
-                <ImageView
-                    android:id="@+id/profilePic"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_alignParentLeft="true" />
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/profilePic" />
-
-                <TextView
-                    android:id="@+id/screenName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/name" />
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:cardCornerRadius="10dp">
 
                 <RelativeLayout
-                    android:id="@+id/tweetContainer"
+                    android:id="@+id/container"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/name"
-                    android:layout_toRightOf="@id/profilePic">
-
-                    <TextView
-                        android:id="@+id/tweetBody"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        />
+                    android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/tweetImage"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_below="@id/tweetBody"
-                        android:adjustViewBounds="true"
-                        android:visibility="gone" />
+                        android:id="@+id/profilePic"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_margin="8dp" />
 
-                    <VideoView
-                        android:id="@+id/tweetVideo"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tweetBody"
-                        android:visibility="gone" />
+                        android:layout_marginTop="8dp"
+                        android:layout_toRightOf="@id/profilePic"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/screenName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name"
+                        android:layout_toRightOf="@id/profilePic" />
+
+                    <RelativeLayout
+                        android:id="@+id/tweetContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/profilePic"
+                        android:layout_marginLeft="8dp">
+
+                        <TextView
+                            android:id="@+id/tweetBody"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/tweetImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="300dp"
+                            android:layout_below="@id/tweetBody"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/border"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+
+                        <VideoView
+                            android:id="@+id/tweetVideo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tweetBody"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/btnReply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tweetContainer"
+                        android:src="@drawable/ic_vector_reply_activity"
+                        android:text="@string/reply" />
                 </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/btnReply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profilePic"
-                    android:text="@string/reply"
-                    android:src="@drawable/ic_vector_reply_activity"/>
-            </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/replies"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/container"
-                >
-            </android.support.v7.widget.RecyclerView>
-
-            <RelativeLayout
-                android:id="@+id/replyContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:visibility="gone">
-
-                <EditText
-                    android:id="@+id/replyText"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/replies"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lines="3"
-                    android:maxLength="140"
-                    android:autoLink="all"
-                    android:linksClickable="true"/>
-
-                <Button
-                    android:id="@+id/btnSendReply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/replyText"
-                    android:text="@string/reply"
+                    android:layout_height="200dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
-                    android:layout_margin="8dp"/>
-                <TextView
+                    android:layout_below="@id/container"></android.support.v7.widget.RecyclerView>
+
+                <RelativeLayout
+                    android:id="@+id/replyContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/charactersRemaining"
-                    android:layout_toLeftOf="@id/btnSendReply"
-                    android:layout_below="@id/replyText"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="10dp"
+                    android:visibility="gone">
 
-                    />
-            </RelativeLayout>
+                    <EditText
+                        android:id="@+id/replyText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="all"
+                        android:lines="3"
+                        android:linksClickable="true"
+                        android:maxLength="140" />
+
+                    <Button
+                        android:id="@+id/btnSendReply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/replyText"
+                        android:layout_margin="8dp"
+                        android:text="@string/reply" />
+
+                    <TextView
+                        android:id="@+id/charactersRemaining"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/replyText"
+                        android:layout_toLeftOf="@id/btnSendReply"
+
+                        />
+                </RelativeLayout>
 
 
+            </LinearLayout>
+        </ScrollView>
 
 
-        </LinearLayout>
-
-
-    </android.support.v7.widget.CardView>
 </layout>

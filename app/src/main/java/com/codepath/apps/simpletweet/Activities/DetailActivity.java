@@ -35,6 +35,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.simpletweet.R.id.charactersRemaining;
 
@@ -117,17 +118,19 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
         name.setText(tweet.getUser().getName());
-        screenName.setText(tweet.getUser().getScreenName());
+        screenName.setText("@"+tweet.getUser().getScreenName());
         tweetBody.setText(tweet.getBody());
         Glide.clear(profileImage);
         profileImage.setImageResource(0);
         String profilePicUrl = tweet.getUser().getProfileImageUrl();
 
-        Glide.with(DetailActivity.this).load(profilePicUrl).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher).into(profileImage);
+        Glide.with(DetailActivity.this).load(profilePicUrl).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher)
+                .bitmapTransform(new RoundedCornersTransformation(DetailActivity.this, 5, 5)).into(profileImage);
 
         if(!(tweet.getImageUrl().equals(""))){
             tweetImage.setVisibility(View.VISIBLE);
-            Glide.with(DetailActivity.this).load(tweet.getImageUrl()).into(tweetImage);
+            Glide.with(DetailActivity.this).load(tweet.getImageUrl())
+                    .into(tweetImage);
         }
 
 
