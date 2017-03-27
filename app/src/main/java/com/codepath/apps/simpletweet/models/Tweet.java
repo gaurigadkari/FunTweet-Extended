@@ -29,6 +29,12 @@ import static android.media.CamcorderProfile.get;
 @Table(database = MyDatabase.class)
 @Parcel(analyze={Tweet.class})
 public class Tweet extends BaseModel {
+    public String getVideoImageUrl() {
+        return videoImageUrl;
+    }
+
+    @Column
+    public String videoImageUrl = "";
     @Column
     public String imageUrl = "";
     @Column
@@ -150,6 +156,7 @@ public class Tweet extends BaseModel {
                 if(tweet.type.equals("video")){
                     String url = media.getJSONObject(0).getJSONObject("video_info").getJSONArray("variants").getJSONObject(0).getString("url");
                     tweet.videoUrl = url;
+                    tweet.videoImageUrl = mediaUrl;
                 }
             }
             tweet.save();

@@ -141,8 +141,10 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 //                videoHolder.tweetVideo.requestFocus();
 //                videoHolder.tweetVideo.start();
                 //Glide.with(context).load(currentTweet.videoUrl).into(videoHolder.tweetVideo);
-                videoHolder.tweetVideo.setVideoPath(currentTweet.getVideoUrl());
-
+                //videoHolder.tweetVideo.setVideoPath(currentTweet.getVideoUrl());
+                Glide.with(context).load(currentTweet.getVideoImageUrl()).error(R.drawable.ic_launcher)
+                        .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
+                        .placeholder(R.drawable.ic_launcher).into(videoHolder.tweetVideo);
                 break;
 
         }
@@ -210,7 +212,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static class TweetVideoViewHolder extends RecyclerView.ViewHolder {
         protected TextView tweet, name, screenName, timeCreated;
         protected ImageView profilePic;
-        protected VideoView tweetVideo;
+        protected ImageView tweetVideo;
 
         public TweetVideoViewHolder(View itemView) {
             super(itemView);
@@ -221,7 +223,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
             //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
             profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
-            tweetVideo = (VideoView) itemView.findViewById(R.id.video);
+            tweetVideo = (ImageView) itemView.findViewById(R.id.video);
 
 
         }
