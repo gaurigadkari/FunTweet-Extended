@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletweet.Activities;
 
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
+import android.widget.MediaController;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
@@ -134,6 +136,16 @@ public class DetailActivity extends AppCompatActivity {
             tweetImage.setVisibility(View.VISIBLE);
             Glide.with(DetailActivity.this).load(tweet.getImageUrl())
                     .into(tweetImage);
+        }
+        if(!(tweet.getVideoUrl().equals(""))){
+            tweetVideo.setVisibility(View.VISIBLE);
+            Uri uri = Uri.parse(tweet.getVideoUrl()); //Declare your url here.
+
+            tweetVideo.setMediaController(new MediaController(DetailActivity.this));
+                tweetVideo.setVideoURI(uri);
+                tweetVideo.requestFocus();
+                tweetVideo.start();
+
         }
 
 
