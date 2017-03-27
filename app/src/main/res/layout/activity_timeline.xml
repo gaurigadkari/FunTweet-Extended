@@ -6,6 +6,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
@@ -25,25 +26,6 @@
 
 
             <!-- <include layout="@layout/content_timeline" />-->
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-            <android.support.v7.widget.RecyclerView
-
-                android:id="@+id/timeline"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
-
-            </android.support.v7.widget.RecyclerView>
-            </android.support.v4.widget.SwipeRefreshLayout>
 
 
 
@@ -55,6 +37,13 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@drawable/ic_compose_action_drafts_default" />
+
+        <fragment
+            android:id="@+id/fragment1"
+            android:name="com.codepath.apps.simpletweet.Fragments.TweetListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_tweets_list" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

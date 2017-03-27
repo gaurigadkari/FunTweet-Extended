@@ -2,7 +2,6 @@ package com.codepath.apps.simpletweet.Activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
-import com.codepath.apps.simpletweet.Fragments.ComposeDialogFragment;
+import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
@@ -31,7 +30,6 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,17 +37,12 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 import static android.media.CamcorderProfile.get;
+import static com.codepath.apps.simpletweet.R.id.swipeContainer;
 
 
 public class TimelineActivity extends AppCompatActivity implements ComposeDialogFragment.ComposeTweetListener {
-    private EndlessRecyclerViewScrollListener scrollListener;
-    private SwipeRefreshLayout swipeContainer;
-    private TwitterClient client;
-    ArrayList<Tweet> tweets;
-    private ActivityTimelineBinding binding;
-    private TweetAdapter tweetAdapter;
-    private static final String STATE_ITEMS = "items";
 
+    private TwitterClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,15 +67,12 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         //Log.d(TimelineActivity.class.getName(), tweetList.size()+"");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
         Toolbar toolbar = binding.toolbar;
-        //(Toolbar) findViewById(R.id.toolbar);
-        //
-        //
-
         setSupportActionBar(toolbar);
         if (savedInstanceState != null) {
             tweets = Parcels.unwrap(savedInstanceState.getParcelable(STATE_ITEMS));
         }
-        swipeContainer = binding.swipeContainer;
+        swipeContainer = (SwipeRefreshLayout) findViewById(swipeContainer);
+                //binding.swipeContainer;
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
@@ -96,7 +86,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
 
         });
 
-        RecyclerView rvTimeline = binding.timeline;
+        RecyclerView rvTimeline = (RecyclerView) findViewById(R.id.timeline);
+        //= binding.timeline;
         //(RecyclerView) findViewById(R.id.timeline);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         //linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
