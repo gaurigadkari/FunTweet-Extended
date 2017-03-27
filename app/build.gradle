@@ -9,6 +9,11 @@ android {
         applicationId "com.codepath.apps.restclienttemplate"
         minSdkVersion 16
         targetSdkVersion 25
+        vectorDrawables.useSupportLibrary = true
+
+    }
+    ext {
+        supportLibVersion = '25.2.0'  // variable that can be referenced to keep support libs consistent
     }
 
     // Related to https://github.com/scribejava/scribejava/issues/480
@@ -31,6 +36,7 @@ repositories {
 }
 
 def dbflow_version = "4.0.0-beta5"
+def supportLibVersion = "25.3.0"
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -54,6 +60,9 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.6'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.allattentionhere:autoplayvideos:0.0.4'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
 
 
 }

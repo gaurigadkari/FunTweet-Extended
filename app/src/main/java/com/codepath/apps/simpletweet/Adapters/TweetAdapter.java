@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -22,6 +23,9 @@ import android.widget.MediaController;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
@@ -91,7 +95,9 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 String profilePicUrl = currentTweet.getUser().getProfileImageUrl();
 
 
-                Glide.with(context).load(profilePicUrl).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher)
+                Glide.with(context).load(profilePicUrl).error(R.drawable.ic_launcher)
+                        .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
+                        .placeholder(R.drawable.ic_launcher)
                         .into(simpleHolder.profilePic);
 
                 break;
@@ -101,13 +107,18 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 imageHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
                 imageHolder.timeCreated.setText(currentTweet.getCreatedAt());
                 imageHolder.tweet.setText(currentTweet.getBody());
+                Log.d("DEBUG",currentTweet.getBody().toString());
                 Glide.clear(imageHolder.profilePic);
                 imageHolder.profilePic.setImageResource(0);
                 String profilePicUrl1 = currentTweet.getUser().getProfileImageUrl();
 
-                Glide.with(context).load(profilePicUrl1).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher).into(imageHolder.profilePic);
+                Glide.with(context).load(profilePicUrl1).error(R.drawable.ic_launcher)
+                        .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
+                        .placeholder(R.drawable.ic_launcher).into(imageHolder.profilePic);
                 imageHolder.tweetImage.setImageResource(0);
-                Glide.with(context).load(currentTweet.imageUrl).error(R.drawable.ic_launcher).into(imageHolder.tweetImage);
+                Glide.with(context).load(currentTweet.imageUrl)
+                        //.bitmapTransform(new RoundedCornersTransformation(context, 10, 10))
+                        .error(R.drawable.ic_launcher).into(imageHolder.tweetImage);
                 break;
             //.placeholder(R.drawable.ic_launcher)
             case tweetWithVideo:
@@ -119,7 +130,9 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 Glide.clear(videoHolder.profilePic);
                 videoHolder.profilePic.setImageResource(0);
                 String profilePicUrl2 = currentTweet.getUser().getProfileImageUrl();
-                Glide.with(context).load(profilePicUrl2).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher).into(videoHolder.profilePic);
+                Glide.with(context).load(profilePicUrl2).error(R.drawable.ic_launcher)
+                        .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
+                        .placeholder(R.drawable.ic_launcher).into(videoHolder.profilePic);
                 Uri uri = Uri.parse(currentTweet.getVideoUrl()); //Declare your url here.
 
                 //for VideoView

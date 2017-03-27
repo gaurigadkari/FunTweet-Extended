@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        >
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp">
+
             <ImageView
+                android:id="@+id/profilePic"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:id="@+id/profilePic"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/name"
-                android:layout_toRightOf="@id/profilePic"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/profilePic"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/screenName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/name"
-                android:textSize="14sp"
-                android:layout_marginLeft="4dp"/>
+                android:textSize="14sp" />
             <!--<ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,27 +43,33 @@
                 android:id="@+id/dot"
                 android:layout_margin="4dp"/>-->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/time"
-                android:layout_toRightOf="@id/screenName"
-                android:textSize="14sp"
-                android:layout_marginLeft="4dp"/>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/screenName"
+                android:textSize="14sp" />
+
+            <TextView
                 android:id="@+id/tweet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/name"
                 android:layout_toRightOf="@id/profilePic"
-                android:textSize="14sp"
-                android:autoLink="all"/>        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/image"
-            android:layout_toRightOf="@id/profilePic"
-            android:layout_below="@id/tweet"/>
-    </RelativeLayout>
+                android:autoLink="all"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="230dp"
+                android:scaleType="centerCrop"
+                android:layout_below="@id/tweet"
+                android:layout_toRightOf="@id/profilePic"
+                android:background="@drawable/border"
+                android:layout_marginTop="8dp"/>
+        </RelativeLayout>
 
 
-</android.support.v7.widget.CardView>
-    </layout>
+    </android.support.v7.widget.CardView>
+</layout>
