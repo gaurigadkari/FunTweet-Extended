@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host=" cpsimpletweets"
+                    android:host=" cpsimpletweets.com"
                     android:scheme="oauth" />
             </intent-filter>
             <intent-filter>

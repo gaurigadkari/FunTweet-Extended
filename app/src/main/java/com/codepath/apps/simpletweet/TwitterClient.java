@@ -29,7 +29,7 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
 	public static final String REST_CONSUMER_KEY = "nuVrDjMAJLTickmo0uv4GCyLl";       // Change this
 	public static final String REST_CONSUMER_SECRET = "a0EiDc9p3Lm8WfZpgyeI1PXYNYxhRFwpW3tGDfzwUcYs5z2gBT"; // Change this
-	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
+	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets.com"; // Change this (here and in manifest)
 
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
