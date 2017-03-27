@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.codepath.apps.simpletweet.Activities.DetailActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:padding="8dp"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/profilePic" />
+
+            <TextView
+                android:id="@+id/screenName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name"
+                android:layout_toRightOf="@id/profilePic" />
+
+            <RelativeLayout
+                android:id="@+id/tweetContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profilePic">
+
+                <TextView
+                    android:id="@+id/tweetBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/tweetImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tweetBody"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone" />
+
+                <VideoView
+                    android:id="@+id/tweetVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tweetBody"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tweetContainer"
+                android:text="@string/reply" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/replyContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/replyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="4" />
+
+            <Button
+                android:id="@+id/btnSendReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/replyText"
+                android:text="@string/reply" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/tweetReplyContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profilePicReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/nameReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/profilePicReply" />
+
+            <TextView
+                android:id="@+id/screenNameReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameReply"
+                android:layout_toRightOf="@id/profilePicReply" />
+
+            <RelativeLayout
+                android:id="@+id/tweetContainerReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profilePicReply">
+
+                <TextView
+                    android:id="@+id/tweetBodyReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/tweetImageReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tweetBodyReply"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone" />
+
+                <VideoView
+                    android:id="@+id/tweetVideoReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tweetBodyReply"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

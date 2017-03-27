@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -82,7 +83,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case simpleTweet:
                 SimpleTweetViewHolder simpleHolder = (SimpleTweetViewHolder) holder;
                 simpleHolder.name.setText(currentTweet.getUser().getName());
-                simpleHolder.screenName.setText(currentTweet.getUser().getScreenName());
+                simpleHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
                 simpleHolder.timeCreated.setText(currentTweet.getCreatedAt());
                 simpleHolder.tweet.setText(currentTweet.getBody());
                 Glide.clear(simpleHolder.profilePic);
@@ -90,13 +91,14 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 String profilePicUrl = currentTweet.getUser().getProfileImageUrl();
 
 
-                Glide.with(context).load(profilePicUrl).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher).into(simpleHolder.profilePic);
+                Glide.with(context).load(profilePicUrl).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher)
+                        .into(simpleHolder.profilePic);
 
                 break;
             case tweetWithImage:
                 TweetImageViewHolder imageHolder = (TweetImageViewHolder) holder;
                 imageHolder.name.setText(currentTweet.getUser().getName());
-                imageHolder.screenName.setText(currentTweet.getUser().getScreenName());
+                imageHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
                 imageHolder.timeCreated.setText(currentTweet.getCreatedAt());
                 imageHolder.tweet.setText(currentTweet.getBody());
                 Glide.clear(imageHolder.profilePic);
@@ -111,7 +113,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case tweetWithVideo:
                 TweetVideoViewHolder videoHolder = (TweetVideoViewHolder) holder;
                 videoHolder.name.setText(currentTweet.getUser().getName());
-                videoHolder.screenName.setText(currentTweet.getUser().getScreenName());
+                videoHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
                 videoHolder.timeCreated.setText(currentTweet.getCreatedAt());
                 videoHolder.tweet.setText(currentTweet.getBody());
                 Glide.clear(videoHolder.profilePic);
@@ -120,11 +122,13 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 Glide.with(context).load(profilePicUrl2).error(R.drawable.ic_launcher).placeholder(R.drawable.ic_launcher).into(videoHolder.profilePic);
                 Uri uri = Uri.parse(currentTweet.getVideoUrl()); //Declare your url here.
 
-                videoHolder.tweetVideo.setMediaController(new MediaController(context));
-                videoHolder.tweetVideo.setVideoURI(uri);
-                videoHolder.tweetVideo.requestFocus();
-                videoHolder.tweetVideo.start();
+                //for VideoView
+//                videoHolder.tweetVideo.setMediaController(new MediaController(context));
+//                videoHolder.tweetVideo.setVideoURI(uri);
+//                videoHolder.tweetVideo.requestFocus();
+//                videoHolder.tweetVideo.start();
                 //Glide.with(context).load(currentTweet.videoUrl).into(videoHolder.tweetVideo);
+                videoHolder.tweetVideo.setVideoPath(currentTweet.getVideoUrl());
 
                 break;
 
@@ -143,11 +147,11 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         Tweet tweet = tweets.get(position);
         //Log.d("DEBUG",tweet.expandedMediaUrl.toString());
-            if(tweet.expandedMediaUrl.contains("photo")){
-                return 1;
-            } else if(tweet.expandedMediaUrl.contains("video")){
-                return 2;
-            } else if(tweet.expandedMediaUrl.equals("")){
+        if(tweet.expandedMediaUrl.contains("photo")){
+            return 1;
+        } else if(tweet.expandedMediaUrl.contains("video")){
+            return 2;
+        } else if(tweet.expandedMediaUrl.equals("")){
             return 0;
         }
 

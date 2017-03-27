@@ -4,19 +4,17 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent" android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
             android:padding="8dp"
-            app:cardCornerRadius="10dp"
-            android:orientation="vertical">
+            app:cardCornerRadius="10dp">
 
             <RelativeLayout
                 android:id="@+id/container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/profilePic"
@@ -34,14 +32,14 @@
                     android:id="@+id/screenName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/name" />
+                    android:layout_below="@id/name"
+                    android:layout_toRightOf="@id/profilePic" />
 
                 <RelativeLayout
                     android:id="@+id/tweetContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/name"
-                    android:layout_toRightOf="@id/profilePic">
+                    android:layout_below="@id/profilePic">
 
                     <TextView
                         android:id="@+id/tweetBody"
@@ -52,8 +50,8 @@
 
                     <ImageView
                         android:id="@+id/tweetImage"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/tweetBody"
                         android:adjustViewBounds="true"
                         android:visibility="gone" />
@@ -66,25 +64,13 @@
                         android:visibility="gone" />
                 </RelativeLayout>
 
-                <ImageView
+                <Button
                     android:id="@+id/btnReply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/profilePic"
-                    android:text="@string/reply"
-                    android:src="@drawable/ic_vector_reply_activity"/>
+                    android:layout_below="@id/tweetContainer"
+                    android:text="@string/reply" />
             </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/replies"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/container"
-                >
-            </android.support.v7.widget.RecyclerView>
 
             <RelativeLayout
                 android:id="@+id/replyContainer"
@@ -98,33 +84,29 @@
                     android:id="@+id/replyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lines="3"
-                    android:maxLength="140"
-                    android:autoLink="all"
-                    android:linksClickable="true"/>
+                    android:lines="4" />
 
                 <Button
                     android:id="@+id/btnSendReply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/replyText"
-                    android:text="@string/reply"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="8dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/charactersRemaining"
-                    android:layout_toLeftOf="@id/btnSendReply"
-                    android:layout_below="@id/replyText"
-
-                    />
+                    android:text="@string/reply" />
             </RelativeLayout>
 
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/replies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/container">
 
+            </android.support.v7.widget.RecyclerView>
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </android.support.v7.widget.CardView>

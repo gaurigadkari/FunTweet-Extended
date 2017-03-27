@@ -57,7 +57,7 @@ public class ComposeDialogFragment extends DialogFragment {
     TimelineActivity timelineActivity;
     private TweetAdapter tweetAdapter;
     String tweetBody = "";
-    EditText composeTweet;
+    static EditText composeTweet;
     Context context;
     public interface ComposeTweetListener {
         public void tweetClickHandler(String tweetBody);
@@ -138,6 +138,7 @@ public class ComposeDialogFragment extends DialogFragment {
         context = getActivity();
         SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
         String draftTweet = sharedPreferences.getString("tweet", "");
+        composeTweet.setText(tweetBody);
         if(!(draftTweet.equals(""))){
             composeTweet.setText(draftTweet);
         }
@@ -178,9 +179,19 @@ public class ComposeDialogFragment extends DialogFragment {
         });
     }
 
+    public void setComposeText(){
+
+    }
+
     public static ComposeDialogFragment newInstance(ComposeTweetListener listener) {
         ComposeDialogFragment composeDialogFragment = new ComposeDialogFragment();
         composeDialogFragment.listener = listener;
+        return composeDialogFragment;
+    }
+    public static ComposeDialogFragment newInstance(ComposeTweetListener listener, String tweetBody) {
+        ComposeDialogFragment composeDialogFragment = new ComposeDialogFragment();
+        composeDialogFragment.listener = listener;
+        composeDialogFragment.tweetBody = tweetBody;
         return composeDialogFragment;
     }
 }

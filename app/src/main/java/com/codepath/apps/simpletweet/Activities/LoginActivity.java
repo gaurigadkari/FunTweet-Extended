@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletweet.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -10,11 +11,28 @@ import com.codepath.apps.simpletweet.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
-
+	String titleOfPage = "";
+	String urlOfPage = "";
+	Uri imageUriOfPage;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		String type = intent.getType();
+
+		if (Intent.ACTION_SEND.equals(action) && type != null) {
+			if ("text/plain".equals(type)) {
+
+				// Make sure to check whether returned data will be null.
+				titleOfPage = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+				urlOfPage = intent.getStringExtra(Intent.EXTRA_TEXT);
+				//imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+				//showComposeDialog(titleOfPage);
+			}
+		}
+
 	}
 
 
@@ -29,8 +47,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		 Intent i = new Intent(this, TimelineActivity.class);
-		 startActivity(i);
+		Intent i = new Intent(this, TimelineActivity.class);
+		//i.putExtra("title", titleOfPage);
+		i.putExtra("url", urlOfPage);
+		//i.putExtra("uri", imageUriOfPage);
+		startActivity(i);
+
 		//Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
 
 	}

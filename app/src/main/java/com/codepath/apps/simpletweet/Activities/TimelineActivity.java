@@ -56,19 +56,20 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+        intent.getStringExtra("Hello");
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
 
                 // Make sure to check whether returned data will be null.
-                String titleOfPage = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-                String urlOfPage = intent.getStringExtra(Intent.EXTRA_TEXT);
-                Uri imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            }
-        }
+                //String titleOfPage = intent.getStringExtra("title");
+                String urlOfPage = intent.getStringExtra("url");
+                //Uri imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if(!(urlOfPage.equals("")))
+                showComposeDialog(urlOfPage);
+
+
 
             //setContentView(R.layout.activity_timeline);
-        client = TwitterApplication.getRestClient();
+         client = TwitterApplication.getRestClient();
 
         //Log.d(TimelineActivity.class.getName(), tweetList.size()+"");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
@@ -129,7 +130,12 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
 
 
     }
-
+    private void showComposeDialog(String tweetBody) {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeDialogFragment composeDialogFragment = ComposeDialogFragment.newInstance(TimelineActivity.this, tweetBody);
+        composeDialogFragment.setComposeText();
+        composeDialogFragment.show(fm, "fragment_edit_name");
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
