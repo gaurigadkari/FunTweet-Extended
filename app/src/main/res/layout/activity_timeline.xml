@@ -27,9 +27,6 @@
 
             <!-- <include layout="@layout/content_timeline" />-->
 
-
-
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
@@ -38,12 +35,19 @@
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@drawable/ic_compose_action_drafts_default" />
 
-        <fragment
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/your_placeholder">
+        </FrameLayout>
+        <!--<fragment
             android:id="@+id/fragment1"
             android:name="com.codepath.apps.simpletweet.Fragments.TweetListFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_tweets_list" />
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_tweets_list" />-->
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
