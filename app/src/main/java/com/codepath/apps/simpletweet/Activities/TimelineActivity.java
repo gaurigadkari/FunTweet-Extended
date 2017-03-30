@@ -5,7 +5,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.support.v4.app.Fragment;
 
 import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
 
+import com.codepath.apps.simpletweet.Fragments.HomeTimelineFragment;
+import com.codepath.apps.simpletweet.Fragments.MentionsTimelineFragment;
 import com.codepath.apps.simpletweet.Fragments.TweetListFragment;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
@@ -29,20 +33,18 @@ import cz.msebera.android.httpclient.Header;
 
 
 public class TimelineActivity extends AppCompatActivity implements ComposeDialogFragment.ComposeTweetListener, TweetListFragment.TweetListListener {
-    private ActivityTimelineBinding binding;
-    private TwitterClient client;
-    TweetListFragment tweetListFragment;
+    //private ActivityTimelineBinding binding;
+    HomeTimelineFragment homeTimelineFragment;
+    FragmentPagerAdapter adapterViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        client = TwitterApplication.getRestClient();
 
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-
 
         // Make sure to check whether returned data will be null.
         //String titleOfPage = intent.getStringExtra("title");
@@ -50,18 +52,14 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         //Uri imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (!(urlOfPage.equals("")))
             showComposeDialog(urlOfPage);
-
-
-        //setContentView(R.layout.activity_timeline);
-
-
+        setContentView(R.layout.activity_timeline);
         //Log.d(TimelineActivity.class.getName(), tweetList.size()+"");
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
-        Toolbar toolbar = binding.toolbar;
+        //binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                //binding.toolbar;
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = binding.fab;
-        //
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                //binding.fab;
         //(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,104 +71,18 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
             }
         });
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-// Replace the contents of the container with the new fragment
-        ft.replace(R.id.your_placeholder, new TweetListFragment(), "TweetListFragment");
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
-        ft.commitNow();
-        tweetListFragment = (TweetListFragment) getSupportFragmentManager().findFragmentByTag("TweetListFragment");
-
+//        ft.replace(R.id.your_placeholder, new HomeTimelineFragment(), "HomeTimelineFragment");
+//        ft.commitNow();
+        homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager().findFragmentByTag("HomeTimelineFragment");
+        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapterViewPager);
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.your_placeholder, new TweetListFragment(), "TweetListFragment");
+//        ft.commitNow();
+//        tweetListFragment = (TweetListFragment) getSupportFragmentManager().findFragmentByTag("TweetListFragment");
         //tweetListFragment = (TweetListFragment) binding.fragment1;
         //TweetListFragment.newInstance(TimelineActivity.this);
-
-        populateTimeline();
-
-    }
-
-    public void tweet(String tweetBody) {
-        //client = TwitterApplication.getRestClient();
-//        tweets = new ArrayList<>();
-//        tweetAdapter = new TweetAdapter(this, tweets);
-        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());
-                //tweets.clear();
-                //tweets.add(0, Tweet.fromJson(response));
-                //tweetAdapter.notifyDataSetChanged();
-                tweetListFragment.addTweet(Tweet.fromJson(response));
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
-
-            }
-        });
-    }
-
-
-    public void loadNextDataFromApi(int count, Long maxId) {
-//        Long maxId = tweets.get(count - 1).getId();
-        client.getHomeTimeline(true, maxId, new JsonHttpResponseHandler() {
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApi " + response.toString());
-                tweetListFragment.addAllTweets(Tweet.fromJSONArray(response));
-                //tweetListFragment.reloadRecylerView();
-//                tweets.addAll(Tweet.fromJSONArray(response));
-//                tweetAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApiError " + responseString);
-            }
-
-        });
-
-    }
-
-    public void populateTimeline() {
-
-        /*if (!(Utilities.isNetworkAvailable(getContext()) && Utilities.isOnline())) {
-            ArrayList<Tweet> tweetList = (ArrayList<Tweet>) SQLite.select().
-                    from(Tweet.class).queryList();
-
-            //tweets.clear();
-            tweetListFragment.addAllTweetsDB(tweetList);
-            //tweets.addAll(tweetList);
-            //Collections.reverse(tweets);
-            //tweetAdapter.notifyDataSetChanged();
-            //swipeContainer.setRefreshing(false);
-
-        } */
-        if (!true) {
-        } else {
-            client.getHomeTimeline(false, Long.valueOf(1), new JsonHttpResponseHandler() {
-                //Success
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                    Log.d(TimelineActivity.class.getName(), "Populate timeline " + response.toString());
-                    tweetListFragment.addAllTweets(Tweet.fromJSONArray(response));
-//                    tweets.clear();
-//                    tweetAdapter.notifyDataSetChanged();
-//                    tweets.addAll(Tweet.fromJSONArray(response));
-//                    tweetAdapter.notifyDataSetChanged();
-
-                    //swipeContainer.setRefreshing(false);
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorObj) {
-                    Log.d(TimelineActivity.class.getName(), "Populate timeline Error" + errorObj.toString());
-                }
-            });
-        }
     }
 
     private void showComposeDialog(String tweetBody) {
@@ -185,5 +97,47 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
     public void tweetClickHandler(String tweetBody) {
         //TODO get this working
         //tweet(tweetBody);
+    }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 2;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return HomeTimelineFragment.newInstance(1, "Home");
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return MentionsTimelineFragment.newInstance(1, "Mentions");
+//                case 2: // Fragment # 1 - This will show SecondFragment
+//                    return SecondFragment.newInstance(2, "Page # 3");
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Home";
+                case 1:
+                    return "Mentions";
+            }
+            return "Page " + position;
+        }
+
     }
 }

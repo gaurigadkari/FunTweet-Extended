@@ -8,6 +8,7 @@ import android.content.Context;
 import com.codepath.apps.simpletweet.models.Tweet;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import static com.codepath.apps.simpletweet.R.id.tweetBody;
@@ -78,7 +79,18 @@ public class TwitterClient extends OAuthBaseClient {
 
         getClient().post(apiUrl, params, handler);
     }
-	//compose tweet
+
+    public void getMentionsTimeline(Boolean loadNext, Long maxId, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count",25);
+		//params.put("oEmbed");
+		if(loadNext) {
+			params.put("max_id", maxId);
+		}
+		getClient().get(apiUrl,params, handler);
+    }
+    //compose tweet
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)

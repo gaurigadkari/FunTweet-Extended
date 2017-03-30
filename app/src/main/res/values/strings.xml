@@ -7,6 +7,12 @@
     <string name="tweet">tweet</string>
     <string name="whats_happening">What\'s happening?</string>
     <string name="reply">Reply</string>
+    <string name="profile">Profile</string>
+    <string name="highlights">Highlights</string>
+    <string name="lists">Lists</string>
+    <string name="connect">Connect</string>
+    <string name="settings_and_privacy">Settings and Privacy</string>
+    <string name="help_center">Help Center</string>
 
 
 </resources>

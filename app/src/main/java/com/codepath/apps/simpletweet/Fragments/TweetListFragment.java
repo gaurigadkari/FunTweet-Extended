@@ -51,7 +51,7 @@ public class TweetListFragment extends Fragment {
     private TweetAdapter tweetAdapter;
     private static final String STATE_ITEMS = "items";
     RecyclerView rvTimeline;
-
+    private TwitterClient client;
     public void addAllTweetsDB(ArrayList<Tweet> tweetsDB) {
         tweets.addAll(tweetsDB);
         Collections.reverse(tweets);
@@ -72,6 +72,26 @@ public class TweetListFragment extends Fragment {
         swipeRefresh(false);
     }
 
+    public void loadNextDataFromApi(int count, Long maxId) {
+//        Long maxId = tweets.get(count - 1).getId();
+        client.getHomeTimeline(true, maxId, new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApi " + response.toString());
+                addAllTweets(Tweet.fromJSONArray(response));
+                //tweetListFragment.reloadRecylerView();
+//                tweets.addAll(Tweet.fromJSONArray(response));
+//                tweetAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApiError " + responseString);
+            }
+
+        });
+
+    }
+
     public interface TweetListListener {
         public void tweetClickHandler(String tweetBody);
     }
@@ -86,16 +106,15 @@ public class TweetListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         final TimelineActivity activity = (TimelineActivity) getActivity();
         tweetAdapter = new TweetAdapter(activity, tweets);
-
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        //binding.swipeContainer;
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                activity.populateTimeline();
-            }
-
-        });
+//        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//        //binding.swipeContainer;
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                activity.populateTimeline();
+//            }
+//
+//        });
         rvTimeline = (RecyclerView) view.findViewById(R.id.timeline);
         //= binding.timeline;
         //(RecyclerView) findViewById(R.id.timeline);
@@ -108,7 +127,7 @@ public class TweetListFragment extends Fragment {
                 Long maxId = tweets.get(totalItemsCount - 1).getId();
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                activity.loadNextDataFromApi(totalItemsCount, maxId);
+                //activity.loadNextDataFromApi(totalItemsCount, maxId);
             }
         };
         rvTimeline.addOnScrollListener(scrollListener);
@@ -155,4 +174,5 @@ public class TweetListFragment extends Fragment {
 
     public interface TweetListListner {
     }
+
 }

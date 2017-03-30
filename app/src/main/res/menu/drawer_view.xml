@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="name"
+        android:id="@+id/drawerTitle">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/profile"
+                    android:icon="@drawable/ic_bar_profile"
+                    android:title="@string/profile" />
+                <item
+                    android:id="@+id/highlights"
+                    android:icon="@drawable/ic_bar_highlights"
+                    android:title="@string/highlights" />
+                <item
+                    android:id="@+id/myMoments"
+                    android:icon="@drawable/ic_bar_messages"
+                    android:title="My Moments" />
+                <item
+                    android:id="@+id/lists"
+                    android:icon="@drawable/ic_bar_lists"
+                    android:title="@string/lists" />
+                <item
+                    android:id="@+id/connect"
+                    android:icon="@drawable/ic_bar_find_people"
+                    android:title="@string/connect" />
+
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/settings"
+                    android:title="@string/settings_and_privacy" />
+                <item
+                    android:id="@+id/helpCenter"
+                    android:title="@string/help_center" />
+            </group>
+        </menu>
+    </item>
+</menu>
