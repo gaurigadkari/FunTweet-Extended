@@ -5,8 +5,8 @@
 
     tools:context="com.codepath.apps.simpletweet.Activities.UserProfileActivity">
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="120dp"
@@ -60,6 +60,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="6dp"
             app:srcCompat="@drawable/ic_vector_location_activity"
             />
         <TextView
@@ -68,7 +69,7 @@
             android:id="@+id/location"
             android:layout_toRightOf="@id/locationPin"
             android:layout_below="@id/bio"
-            android:layout_alignBottom="@id/locationPin"/>
+            android:layout_marginTop="4dp"/>
         <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,6 +119,34 @@
             android:layout_toRightOf="@id/followers"
             android:layout_marginLeft="4dp"
             android:layout_below="@id/location"/>
+        <!--<FrameLayout-->
+            <!--android:id="@+id/your_placeholder"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--/>-->
+
+        <!--<fragment-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/following"-->
+            <!--android:name="com.codepath.apps.simpletweet.Fragments.TweetListFragment"-->
+            <!--android:id="@+id/userFragment"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textAllCaps="true"
+            android:id="@+id/tweetHeader"
+            android:layout_below="@id/following"
+            android:text="Tweets"/>
+
+            <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/userTimeline"
+            android:layout_below="@id/tweetHeader"
+            />
 
 
     </RelativeLayout>

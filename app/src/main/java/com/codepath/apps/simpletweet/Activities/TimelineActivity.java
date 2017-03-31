@@ -33,6 +33,7 @@ import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
 import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
+import com.codepath.apps.simpletweet.models.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -57,6 +58,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
     private DrawerLayout drawer;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -100,9 +102,9 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
                 composeTweetFragment.show(fm, "Tweet");
             }
         });
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.your_placeholder, new HomeTimelineFragment(), "HomeTimelineFragment");
-        ft.commitNow();
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.your_placeholder, new HomeTimelineFragment(), "HomeTimelineFragment");
+//        ft.commitNow();
         homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager().findFragmentByTag("HomeTimelineFragment");
         ViewPager vpPager = binding.viewpager;
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -127,13 +129,18 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         client.getAccountInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
+                user = User.fromJson(responseBody);
+
                 Log.d("DEBUG", "current user "+ responseBody);
                 ImageView headerImage = (ImageView) findViewById(R.id.ivHeader);
-                TextView name = (TextView) findViewById(R.id.userName);
-                TextView screenName = (TextView) findViewById(R.id.userScreenName);
+                TextView name = (TextView) findViewById(R.id.headerUserName);
+                TextView screenName = (TextView) findViewById(R.id.headerScreenName);
                 try {
                     //headerImage.setBackgroundColor(responseBody.getInt("profile_background_color"));
-                    name.setText(responseBody.getString("name"));
+                    //name.setText(responseBody.getString("name"));
+                    name.setText(user.getName());
+
+                    //screenName.setText(responseBody.getString("screen_name"));
                     screenName.setText(responseBody.getString("screen_name"));
 
                 } catch (JSONException e) {
@@ -181,7 +188,9 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         Class fragmentClass;
         switch (item.getItemId()){
             case R.id.profile:
-                startActivity(new Intent(TimelineActivity.this, UserProfileActivity.class));
+                Intent i = new Intent(TimelineActivity.this, UserProfileActivity.class);
+                i.putExtra("screenName", user.getScreenName());
+                startActivity(i);
                 drawer.closeDrawers();
                 break;
 

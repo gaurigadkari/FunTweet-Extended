@@ -17,6 +17,8 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweet.Activities.DetailActivity;
+import com.codepath.apps.simpletweet.Activities.TimelineActivity;
+import com.codepath.apps.simpletweet.Activities.UserProfileActivity;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.Utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweet.models.Tweet;
@@ -77,6 +79,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final Tweet currentTweet = tweets.get(position);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +92,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         switch (holder.getItemViewType()) {
             case simpleTweet:
+
                 SimpleTweetViewHolder simpleHolder = (SimpleTweetViewHolder) holder;
                 simpleHolder.name.setText(currentTweet.getUser().getName());
                 simpleHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
@@ -123,6 +127,14 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }).into(simpleHolder.tweet);
+                simpleHolder.profilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, UserProfileActivity.class);
+                        i.putExtra("screenName", currentTweet.getUser().getScreenName());
+                        context.startActivity(i);
+                    }
+                });
 
                 break;
             case tweetWithImage:
@@ -139,10 +151,40 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 Glide.with(context).load(profilePicUrl1).error(R.drawable.ic_launcher)
                         .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
                         .placeholder(R.drawable.ic_launcher).into(imageHolder.profilePic);
+                new PatternEditableBuilder().
+                        addPattern(Pattern.compile("\\@(\\w+)"), R.color.twitterBlue,
+                                new PatternEditableBuilder.SpannableClickedListener() {
+                                    @Override
+                                    public void onSpanClicked(String text) {
+                                        Toast.makeText(context, "Clicked username: " + text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }).into(imageHolder.tweet);
+
+                new PatternEditableBuilder().
+                        addPattern(Pattern.compile("\\#(\\w+)"), R.color.twitterBlue,
+                                new PatternEditableBuilder.SpannableClickedListener() {
+                                    @Override
+                                    public void onSpanClicked(String text) {
+                                        Toast.makeText(context, "Clicked username: " + text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }).into(imageHolder.tweet);
+                imageHolder.profilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, UserProfileActivity.class);
+                        i.putExtra("screenName", currentTweet.getUser().getScreenName());
+                        context.startActivity(i);
+                    }
+                });
+
+
                 imageHolder.tweetImage.setImageResource(0);
                 Glide.with(context).load(currentTweet.imageUrl)
                         //.bitmapTransform(new RoundedCornersTransformation(context, 10, 10))
                         .error(R.drawable.ic_launcher).into(imageHolder.tweetImage);
+
                 break;
             //.placeholder(R.drawable.ic_launcher)
             case tweetWithVideo:
@@ -157,6 +199,35 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 Glide.with(context).load(profilePicUrl2).error(R.drawable.ic_launcher)
                         .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
                         .placeholder(R.drawable.ic_launcher).into(videoHolder.profilePic);
+                new PatternEditableBuilder().
+                        addPattern(Pattern.compile("\\@(\\w+)"), R.color.twitterBlue,
+                                new PatternEditableBuilder.SpannableClickedListener() {
+                                    @Override
+                                    public void onSpanClicked(String text) {
+                                        Toast.makeText(context, "Clicked username: " + text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }).into(videoHolder.tweet);
+
+                new PatternEditableBuilder().
+                        addPattern(Pattern.compile("\\#(\\w+)"), R.color.twitterBlue,
+                                new PatternEditableBuilder.SpannableClickedListener() {
+                                    @Override
+                                    public void onSpanClicked(String text) {
+                                        Toast.makeText(context, "Clicked username: " + text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }).into(videoHolder.tweet);
+                videoHolder.profilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, UserProfileActivity.class);
+                        i.putExtra("screenName", currentTweet.getUser().getScreenName());
+                        context.startActivity(i);
+                    }
+                });
+
+
                 Uri uri = Uri.parse(currentTweet.getVideoUrl()); //Declare your url here.
 
                 //for VideoView
@@ -173,7 +244,66 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         }
     }
+//    public void commonFunction(RecyclerView.ViewHolder holder){
+//        new PatternEditableBuilder().
+//                addPattern(Pattern.compile("\\@(\\w+)"), R.color.twitterBlue,
+//                        new PatternEditableBuilder.SpannableClickedListener() {
+//                            @Override
+//                            public void onSpanClicked(String text) {
+//                                Toast.makeText(context, "Clicked username: " + text,
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).into(holder.tweet);
+//
+//        new PatternEditableBuilder().
+//                addPattern(Pattern.compile("\\#(\\w+)"), R.color.twitterBlue,
+//                        new PatternEditableBuilder.SpannableClickedListener() {
+//                            @Override
+//                            public void onSpanClicked(String text) {
+//                                Toast.makeText(context, "Clicked username: " + text,
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).into(holder.tweet);
+//
+//    }
 
+    //    public void configureViewHolder(){
+//        SimpleTweetViewHolder simpleHolder = (SimpleTweetViewHolder) holder;
+//        simpleHolder.name.setText(currentTweet.getUser().getName());
+//        simpleHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
+//        simpleHolder.timeCreated.setText(currentTweet.getCreatedAt());
+//        simpleHolder.tweet.setText(currentTweet.getBody());
+//        Glide.clear(simpleHolder.profilePic);
+//        simpleHolder.profilePic.setImageResource(0);
+//        String profilePicUrl = currentTweet.getUser().getProfileImageUrl();
+//
+//
+//        Glide.with(context).load(profilePicUrl).error(R.drawable.ic_launcher)
+//                .bitmapTransform(new RoundedCornersTransformation(context, 5, 5))
+//                .placeholder(R.drawable.ic_launcher)
+//                .into(simpleHolder.profilePic);
+//
+//        new PatternEditableBuilder().
+//                addPattern(Pattern.compile("\\@(\\w+)"), R.color.twitterBlue,
+//                        new PatternEditableBuilder.SpannableClickedListener() {
+//                            @Override
+//                            public void onSpanClicked(String text) {
+//                                Toast.makeText(context, "Clicked username: " + text,
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).into(simpleHolder.tweet);
+//
+//        new PatternEditableBuilder().
+//                addPattern(Pattern.compile("\\#(\\w+)"), R.color.twitterBlue,
+//                        new PatternEditableBuilder.SpannableClickedListener() {
+//                            @Override
+//                            public void onSpanClicked(String text) {
+//                                Toast.makeText(context, "Clicked username: " + text,
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).into(simpleHolder.tweet);
+//
+//    }
     @Override
     public int getItemCount() {
         return tweets.size();

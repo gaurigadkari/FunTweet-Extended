@@ -104,7 +104,9 @@ public class TweetListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        final TimelineActivity activity = (TimelineActivity) getActivity();
+        //final TimelineActivity activity = (TimelineActivity) getActivity();
+        final Activity activity = getActivity();
+
         tweetAdapter = new TweetAdapter(activity, tweets);
 //        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 //        //binding.swipeContainer;
