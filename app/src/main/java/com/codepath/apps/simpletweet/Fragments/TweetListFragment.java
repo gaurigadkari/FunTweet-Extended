@@ -22,7 +22,7 @@ import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
 import com.codepath.apps.simpletweet.Utils.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simpletweet.Utils.Utilities;
-import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
+//import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
 import com.codepath.apps.simpletweet.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.raizlabs.android.dbflow.sql.language.SQLite;

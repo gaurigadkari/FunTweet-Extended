@@ -1,19 +1,26 @@
 package com.codepath.apps.simpletweet.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.app.Fragment;
+import android.widget.ImageView;
 
+//import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
 
 import com.codepath.apps.simpletweet.Fragments.HomeTimelineFragment;
@@ -22,7 +29,7 @@ import com.codepath.apps.simpletweet.Fragments.TweetListFragment;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
-import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
+//import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
 import com.codepath.apps.simpletweet.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -31,12 +38,15 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.codepath.apps.simpletweet.R.id.fab;
+
 
 public class TimelineActivity extends AppCompatActivity implements ComposeDialogFragment.ComposeTweetListener, TweetListFragment.TweetListListener {
     //private ActivityTimelineBinding binding;
     HomeTimelineFragment homeTimelineFragment;
     FragmentPagerAdapter adapterViewPager;
-
+    PagerTabStrip slidingTabStrip;
+    TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,9 +84,13 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
 //        ft.replace(R.id.your_placeholder, new HomeTimelineFragment(), "HomeTimelineFragment");
 //        ft.commitNow();
         homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager().findFragmentByTag("HomeTimelineFragment");
-        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
+        //slidingTabStrip = (PagerTabStrip) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(vpPager);
+        //slidingTabStrip.setViewPager(vpPager);
 //        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.your_placeholder, new TweetListFragment(), "TweetListFragment");
 //        ft.commitNow();
@@ -139,5 +153,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
             return "Page " + position;
         }
 
+
     }
+
 }
