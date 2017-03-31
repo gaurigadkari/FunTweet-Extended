@@ -79,6 +79,18 @@ public class TwitterClient extends OAuthBaseClient {
 
         getClient().post(apiUrl, params, handler);
     }
+    public void postRetweet(String replyToUserName, Long tweetId, String tweetBody, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("statuses/retweet/"+tweetId+".json");
+        RequestParams params = new RequestParams();
+        getClient().post(apiUrl, params, handler);
+    }
+
+    public void postFavorite(Long tweetId, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("favorites/create.json");
+        RequestParams params = new RequestParams();
+        params.put("id", tweetId);
+        getClient().post(apiUrl, params, handler);
+    }
 
     public void getMentionsTimeline(Boolean loadNext, Long maxId, AsyncHttpResponseHandler handler){
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
@@ -89,6 +101,23 @@ public class TwitterClient extends OAuthBaseClient {
 			params.put("max_id", maxId);
 		}
 		getClient().get(apiUrl,params, handler);
+    }
+
+	public void getUserDetails(Boolean loadNext, String screenName, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		//params.put("oEmbed");
+		if(loadNext) {
+			params.put("screen_name", screenName);
+		}
+		getClient().get(apiUrl,params, handler);
+	}
+
+    public void getAccountInfo(AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        RequestParams params = new RequestParams();
+        client.get(apiUrl, params, handler);
     }
     //compose tweet
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

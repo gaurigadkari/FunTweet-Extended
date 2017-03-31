@@ -10,12 +10,13 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:id="@+id/profileBanner"
+            android:id="@+id/profileBackground"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:padding="4dp"/>
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/profilePic"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -47,6 +48,9 @@
             android:layout_below="@id/screenName"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
+            android:visibility="gone"
+            android:layout_marginTop="4dp"
+
             />
         <ImageView
             android:layout_width="wrap_content"
@@ -55,6 +59,7 @@
             android:layout_below="@id/bio"
             android:layout_marginRight="4dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
             app:srcCompat="@drawable/ic_vector_location_activity"
             />
         <TextView
@@ -62,7 +67,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/location"
             android:layout_toRightOf="@id/locationPin"
-            android:layout_below="@id/bio"/>
+            android:layout_below="@id/bio"
+            android:layout_alignBottom="@id/locationPin"/>
         <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,7 +85,39 @@
             android:id="@+id/birthday"
             android:layout_below="@id/location"/>
             <!--android:layout_toRightOf="@id/balloon"-->
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/following"
+            android:layout_below="@id/location"
+            android:layout_marginLeft="8dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/following"
+            android:textAllCaps="true"
+            android:id="@+id/lblFollowing"
+            android:layout_toRightOf="@id/following"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="24dp"
+            android:layout_below="@id/location"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/followers"
+            android:layout_below="@id/location"
+            android:layout_toRightOf="@id/lblFollowing"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/followers"
+            android:textAllCaps="true"
+            android:id="@+id/lblFollowers"
+            android:layout_toRightOf="@id/followers"
+            android:layout_marginLeft="4dp"
+            android:layout_below="@id/location"/>
 
 
     </RelativeLayout>

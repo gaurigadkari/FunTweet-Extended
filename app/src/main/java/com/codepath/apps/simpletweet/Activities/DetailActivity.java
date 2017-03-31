@@ -69,6 +69,8 @@ public class DetailActivity extends AppCompatActivity {
         final EditText replyTweet = binding.replyText;
         final TextView charactersRemaining = binding.charactersRemaining;
         Button btnSendReply = binding.btnSendReply;
+        ImageView btnRetweet = binding.btnRetweet;
+        ImageView btnFavorite = binding.btnFavorite;
         final RelativeLayout replyContainer = binding.replyContainer;
 //        ImageView profileImageReply = binding.profilePicReply;
 //        TextView nameReply = binding.nameReply;
@@ -85,6 +87,12 @@ public class DetailActivity extends AppCompatActivity {
         replyTweets = new ArrayList<>();
         replyTweetAdapter = new TweetAdapter(this, replyTweets);
         recyclerView.setAdapter(replyTweetAdapter);
+        btnRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //client.postRetweet();
+            }
+        });
         replyTweet.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -150,6 +158,9 @@ public class DetailActivity extends AppCompatActivity {
 
 
         tweetID = tweet.getId();
+    }
+    public void onReplyClick(){
+
     }
 
     private void replyToTweet(String reply) {

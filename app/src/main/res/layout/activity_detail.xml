@@ -86,7 +86,7 @@
                         android:id="@+id/btnReply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_vector_reply_activity"
+                        app:srcCompat="@drawable/ic_vector_reply_activity"
                         android:text="@string/reply"
                         android:layout_weight="1"/>
                         <ImageView
@@ -94,16 +94,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-                            android:src="@drawable/ic_vector_retweet_activity"
+                            app:srcCompat="@drawable/ic_vector_retweet_activity"
                             android:layout_weight="1"
                             />
                         <ImageView
-                            android:id="@+id/btnLike"
+                            android:id="@+id/btnFavorite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-                            android:src="@drawable/ic_vector_heart_activity"
-                            android:layout_weight="1"></ImageView>
+                            app:srcCompat="@drawable/ic_vector_heart_activity"
+                            android:layout_weight="1"/>
                     </LinearLayout>
                 </RelativeLayout>
 
