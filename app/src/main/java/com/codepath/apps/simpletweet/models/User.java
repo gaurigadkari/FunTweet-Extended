@@ -26,6 +26,13 @@ public class User extends BaseModel {
     @Column
     public String profileImageUrl;
 
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    @Column
+    public Boolean isVerified;
+
     public String getName() {
         return name;
     }
@@ -52,6 +59,7 @@ public class User extends BaseModel {
             user.screenName = jsonObject.getString("screen_name");
             user.uid = jsonObject.getLong("id");
             user.profileImageUrl = jsonObject.getString("profile_image_url");
+            user.isVerified = jsonObject.getBoolean("verified");
             user.save();
         } catch (JSONException e) {
             e.printStackTrace();

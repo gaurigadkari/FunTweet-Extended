@@ -2,10 +2,7 @@ package com.codepath.apps.simpletweet.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,28 +13,24 @@ import android.view.ViewGroup;
 
 import com.codepath.apps.simpletweet.Activities.TimelineActivity;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
-import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
 import com.codepath.apps.simpletweet.Utils.EndlessRecyclerViewScrollListener;
-import com.codepath.apps.simpletweet.Utils.Utilities;
-//import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
 import com.codepath.apps.simpletweet.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
 import static com.loopj.android.http.AsyncHttpClient.log;
+
+//import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
 
 /**
  * Created by Gauri Gadkari on 3/27/17.
@@ -63,8 +56,10 @@ public class TweetListFragment extends Fragment {
         //swipeContainer.setRefreshing(refresh);
     }
 
-    public void addAllTweets(ArrayList<Tweet> tweetList) {
-        tweets.clear();
+    public void addAllTweets(ArrayList<Tweet> tweetList, Boolean isMoreLoaded) {
+        if(!isMoreLoaded){
+            tweets.clear();
+        }
         tweetAdapter.notifyDataSetChanged();
         tweets.addAll(tweetList);
         log.d("DEBUG", tweets.toString());
@@ -74,21 +69,21 @@ public class TweetListFragment extends Fragment {
 
     public void loadNextDataFromApi(int count, Long maxId) {
 //        Long maxId = tweets.get(count - 1).getId();
-        client.getHomeTimeline(true, maxId, new JsonHttpResponseHandler() {
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApi " + response.toString());
-                addAllTweets(Tweet.fromJSONArray(response));
-                //tweetListFragment.reloadRecylerView();
-//                tweets.addAll(Tweet.fromJSONArray(response));
-//                tweetAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApiError " + responseString);
-            }
-
-        });
+//        client.getHomeTimeline(true, maxId, new JsonHttpResponseHandler() {
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApi " + response.toString());
+//                addAllTweets(Tweet.fromJSONArray(response), true);
+//                //tweetListFragment.reloadRecylerView();
+////                tweets.addAll(Tweet.fromJSONArray(response));
+////                tweetAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApiError " + responseString);
+//            }
+//
+//        });
 
     }
 
@@ -126,10 +121,10 @@ public class TweetListFragment extends Fragment {
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Long maxId = tweets.get(totalItemsCount - 1).getId();
+                Long maxId = (tweets.get(totalItemsCount - 1).getId()) - 1;
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                //activity.loadNextDataFromApi(totalItemsCount, maxId);
+                loadNextDataFromApi(totalItemsCount, maxId);
             }
         };
         rvTimeline.addOnScrollListener(scrollListener);
@@ -144,7 +139,7 @@ public class TweetListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        client = TwitterApplication.getRestClient();
         if (savedInstanceState != null) {
             tweets = Parcels.unwrap(savedInstanceState.getParcelable(STATE_ITEMS));
             tweetAdapter = new TweetAdapter(getActivity(), tweets);

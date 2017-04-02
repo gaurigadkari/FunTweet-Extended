@@ -3,6 +3,8 @@ package com.codepath.apps.simpletweet.Activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -12,19 +14,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.support.v7.widget.SearchView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
 import com.codepath.apps.simpletweet.Fragments.HomeTimelineFragment;
 import com.codepath.apps.simpletweet.Fragments.MentionsTimelineFragment;
@@ -33,12 +44,16 @@ import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
 import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
+import com.codepath.apps.simpletweet.models.Tweet;
 import com.codepath.apps.simpletweet.models.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -111,18 +126,54 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         vpPager.setAdapter(adapterViewPager);
         tabLayout = binding.slidingTabs;
         tabLayout.setupWithViewPager(vpPager);
-//        ImageView headerImage = (ImageView) findViewById(R.id.ivHeader);
-//        TextView name = (TextView) findViewById(R.id.userName);
-//        TextView screenName = (TextView) findViewById(R.id.userScreenName);
 
-        //slidingTabStrip.setViewPager(vpPager);
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.your_placeholder, new TweetListFragment(), "TweetListFragment");
-//        ft.commitNow();
-//        tweetListFragment = (TweetListFragment) getSupportFragmentManager().findFragmentByTag("TweetListFragment");
-        //tweetListFragment = (TweetListFragment) binding.fragment1;
-        //TweetListFragment.newInstance(TimelineActivity.this);
         getCurrentUser();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem filterItem = menu.findItem(R.id.action_settings);
+        //final SearchView filterview = (SearchView) MenuItemCompat.getActionView(filterItem);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView.SearchAutoComplete searchSrcTextView = (SearchView.SearchAutoComplete) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        //List<String> items = Lists.newArrayList(suggestions);
+//        items = new ArrayList<String>();
+//        stringSuggestionAdapter = new SuggestionAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, items);
+//        searchSrcTextView.setThreshold(0);
+//        searchSrcTextView.setAdapter(stringSuggestionAdapter);
+        //SearchView.SearchAutoComplete();
+        //searchView.setSuggestionsAdapter(cursorAdapter);
+        
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String searchQuery = query;
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                search(query);
+
+                //items.add(query);
+                //stringSuggestionAdapter.notifyDataSetChanged();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    private void search(String query) {
+        Intent intent = new Intent(TimelineActivity.this, SearchActivity.class);
+        intent.putExtra("query", query);
+        startActivity(intent);
     }
 
     private void getCurrentUser() {
@@ -132,16 +183,28 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
                 user = User.fromJson(responseBody);
 
                 Log.d("DEBUG", "current user "+ responseBody);
-                ImageView headerImage = (ImageView) findViewById(R.id.ivHeader);
+                final ImageView headerImage = (ImageView) findViewById(R.id.ivHeader);
+                RelativeLayout headerLayout = (RelativeLayout) findViewById(R.id.headerLayout);
                 TextView name = (TextView) findViewById(R.id.headerUserName);
                 TextView screenName = (TextView) findViewById(R.id.headerScreenName);
                 try {
                     //headerImage.setBackgroundColor(responseBody.getInt("profile_background_color"));
                     //name.setText(responseBody.getString("name"));
+                    headerLayout.setBackgroundColor(Color.parseColor("#"+responseBody.getString("profile_background_color")));
                     name.setText(user.getName());
 
                     //screenName.setText(responseBody.getString("screen_name"));
                     screenName.setText(responseBody.getString("screen_name"));
+                    //Glide.with(TimelineActivity.this).load(user.getProfileImageUrl()).into(headerImage);
+                    Glide.with(TimelineActivity.this).load(user.getProfileImageUrl()).asBitmap().into(new BitmapImageViewTarget(headerImage) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(TimelineActivity.this.getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            headerImage.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();

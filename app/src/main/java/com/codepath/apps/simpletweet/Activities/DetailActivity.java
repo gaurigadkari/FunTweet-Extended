@@ -1,5 +1,6 @@
 package com.codepath.apps.simpletweet.Activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Parcel;
@@ -40,6 +41,7 @@ import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.simpletweet.R.id.charactersRemaining;
+import static com.codepath.apps.simpletweet.R.id.replyContainer;
 
 
 public class DetailActivity extends AppCompatActivity {
@@ -49,15 +51,17 @@ public class DetailActivity extends AppCompatActivity {
     Tweet tweet;
     ArrayList<Tweet> replyTweets;
     private TweetAdapter replyTweetAdapter;
-
+    Boolean reply;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        Intent intent = getIntent();
+        tweet = Parcels.unwrap(intent.getParcelableExtra("tweet"));
+        String type = intent.getStringExtra("type");
 
-        tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
         //User user = (User) Parcels.unwrap(getIntent().getParcelableExtra("tweet"))
         ImageView profileImage = binding.profilePic;
         TextView name = binding.name;
@@ -83,10 +87,33 @@ public class DetailActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         //linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        if(type.equals("reply")) {
+            replyContainer.setVisibility(View.VISIBLE);
+            Boolean enable = replyTweet.isEnabled();
+            replyTweet.setText("@" + tweet.getUser().getScreenName() +" ");
+            Log.d("Debug", enable.toString());
+        }
         replyTweets = new ArrayList<>();
         replyTweetAdapter = new TweetAdapter(this, replyTweets);
         recyclerView.setAdapter(replyTweetAdapter);
+        if(tweet.getFavorited() == true){
+            btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
+        }
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(tweet.getFavorited() == false) {
+                    tweet.setFavorited(true);
+                    //btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
+
+                }else {
+                    tweet.setFavorited(false);
+                    //btnFavorite.setImageResource(R.drawable.ic_vector_heart_activity);
+
+                }
+                //btnFavorite.setImageDrawable(R.drawable.ic_action_heart_on_default);
+            }
+        });
         btnRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

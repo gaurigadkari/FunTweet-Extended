@@ -9,11 +9,15 @@ import com.codepath.apps.simpletweet.Activities.TimelineActivity;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
+import com.codepath.apps.simpletweet.Utils.Utilities;
 import com.codepath.apps.simpletweet.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -52,19 +56,17 @@ public class MentionsTimelineFragment extends TweetListFragment {
 
     public void populateTimeline() {
 
-        /*if (!(Utilities.isNetworkAvailable(getContext()) && Utilities.isOnline())) {
+            if(!(Utilities.isNetworkAvailable(getContext()) && Utilities.isOnline())) {
             ArrayList<Tweet> tweetList = (ArrayList<Tweet>) SQLite.select().
                     from(Tweet.class).queryList();
 
             //tweets.clear();
-            tweetListFragment.addAllTweetsDB(tweetList);
+            addAllTweetsDB(tweetList);
             //tweets.addAll(tweetList);
             //Collections.reverse(tweets);
             //tweetAdapter.notifyDataSetChanged();
             //swipeContainer.setRefreshing(false);
 
-        } */
-        if (!true) {
         } else {
             client.getMentionsTimeline(false, Long.valueOf(1), new JsonHttpResponseHandler() {
                 //Success
@@ -72,7 +74,7 @@ public class MentionsTimelineFragment extends TweetListFragment {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     Log.d(TimelineActivity.class.getName(), "Populate timeline " + response.toString());
-                    addAllTweets(Tweet.fromJSONArray(response));
+                    addAllTweets(Tweet.fromJSONArray(response),false);
 //                    tweets.clear();
 //                    tweetAdapter.notifyDataSetChanged();
 //                    tweets.addAll(Tweet.fromJSONArray(response));
@@ -84,7 +86,7 @@ public class MentionsTimelineFragment extends TweetListFragment {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorObj) {
-                    Log.d(TimelineActivity.class.getName(), "Populate timeline Error" + errorObj.toString());
+                    //Log.d(TimelineActivity.class.getName(), "Populate timeline Error" + errorObj.toString());
                 }
             });
         }
@@ -121,4 +123,25 @@ public class MentionsTimelineFragment extends TweetListFragment {
         mentionsTimelineFragment.setArguments(args);
         return mentionsTimelineFragment;
     }
+
+    @Override
+    public void loadNextDataFromApi(int count, Long maxId) {
+        Log.d("Hello", "Mentions");
+        client.getMentionsTimeline(true, maxId, new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApi " + response.toString());
+                addAllTweets(Tweet.fromJSONArray(response), true);
+                //tweetListFragment.reloadRecylerView();
+//                tweets.addAll(Tweet.fromJSONArray(response));
+//                tweetAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(TimelineActivity.class.getName(), "loadNextDataFromApiError " + responseString);
+            }
+
+        });
+    }
+
 }

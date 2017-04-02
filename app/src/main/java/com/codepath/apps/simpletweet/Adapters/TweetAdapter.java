@@ -35,6 +35,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static android.os.Build.VERSION_CODES.M;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import static com.codepath.apps.simpletweet.R.id.btnFavorite;
+import static com.codepath.apps.simpletweet.R.id.btnReply;
 
 /**
  * Created by Gauri Gadkari on 3/21/17.
@@ -86,6 +88,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 //Toast.makeText(context, "hi", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("tweet", Parcels.wrap(currentTweet));
+                intent.putExtra("type","detail");
                 context.startActivity(intent);
 
             }});
@@ -93,7 +96,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         switch (holder.getItemViewType()) {
             case simpleTweet:
 
-                SimpleTweetViewHolder simpleHolder = (SimpleTweetViewHolder) holder;
+                final SimpleTweetViewHolder simpleHolder = (SimpleTweetViewHolder) holder;
                 simpleHolder.name.setText(currentTweet.getUser().getName());
                 simpleHolder.screenName.setText("@"+currentTweet.getUser().getScreenName());
                 simpleHolder.timeCreated.setText(currentTweet.getCreatedAt());
@@ -133,6 +136,43 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         Intent i = new Intent(context, UserProfileActivity.class);
                         i.putExtra("screenName", currentTweet.getUser().getScreenName());
                         context.startActivity(i);
+                    }
+                });
+                simpleHolder.btnReply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, DetailActivity.class);
+                        intent.putExtra("tweet", Parcels.wrap(currentTweet));
+                        intent.putExtra("type","reply");
+                        context.startActivity(intent);
+
+                    }
+                });
+                if(currentTweet.getRetweeted() == true){
+                    simpleHolder.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_activity_green);
+                }
+                simpleHolder.btnRetweet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                if(currentTweet.getFavorited() == true){
+                    simpleHolder.btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
+                }
+                simpleHolder.btnFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(currentTweet.getFavorited() == false) {
+                            currentTweet.setFavorited(true);
+                            simpleHolder.btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
+
+                        }else {
+                            currentTweet.setFavorited(false);
+                            simpleHolder.btnFavorite.setImageResource(R.drawable.ic_vector_heart_activity);
+
+                        }
+                        //simpleHolder.btnFavorite.setImageDrawable(R.drawable.ic_action_heart_on_default);
                     }
                 });
 
@@ -328,11 +368,25 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         return -1;
     }
-
-    public static class SimpleTweetViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView tweet, name, screenName, timeCreated;
         //protected TextView webUrl;
         protected ImageView profilePic;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tweet = (TextView) itemView.findViewById(R.id.tweet);
+            name = (TextView) itemView.findViewById(R.id.name);
+            screenName = (TextView) itemView.findViewById(R.id.screenName);
+            timeCreated = (TextView) itemView.findViewById(R.id.time);
+
+            //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
+            profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
+        }
+    }
+    public static class SimpleTweetViewHolder extends ViewHolder {
+        protected TextView tweet, name, screenName, timeCreated;
+        //protected TextView webUrl;
+        protected ImageView profilePic, btnReply, btnRetweet, btnFavorite;
 
         public SimpleTweetViewHolder(View itemView) {
             super(itemView);
@@ -343,7 +397,9 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
             //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
             profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
-
+            btnReply = (ImageView) itemView.findViewById(R.id.btnReply);
+            btnRetweet = (ImageView) itemView.findViewById(R.id.btnRetweet);
+            btnFavorite = (ImageView) itemView.findViewById(R.id.btnFavorite);
         }
     }
 

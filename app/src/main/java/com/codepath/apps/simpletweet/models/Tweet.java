@@ -53,12 +53,31 @@ public class Tweet extends BaseModel {
     @Column
     public String expandedMediaUrl = "";
 
+    public Boolean getFavorited() {
+        return favorited;
+    }
+
+    public Boolean favorited = false;
+
+    public Boolean getRetweeted() {
+        return retweeted;
+    }
+
+    public void setRetweeted(Boolean retweeted) {
+        this.retweeted = retweeted;
+    }
+
+    public Boolean retweeted = false;
 
     public String getType() {
         return type;
     }
 
     public String type = "simple";
+
+    public void setFavorited(Boolean favorited) {
+        this.favorited = favorited;
+    }
 
 
     public String getVideoUrl() {
@@ -77,18 +96,20 @@ public class Tweet extends BaseModel {
         String result;
         DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         Date date = new Date();
-        long diff = 0, diffSeconds = 0, diffMinutes = 0, diffHours = 0;
+        long diff = 0, diffSeconds = 0, diffMinutes = 0, diffHours = 0, diffDays = 0;
         try {
             created = dateFormat.parse(createdAt);
             diff = date.getTime() - created.getTime();
             diffSeconds = (diff / 1000) % 60;
             diffMinutes = (diff / (60 * 1000)) % 60;
             diffHours = (diff / (60 * 60 * 1000));
+            diffDays = (diff / (60 * 60 * 1000 * 24));
             Log.d("today", date.toString());
             //Log.d("Debud", diffSeconds + "secs" + diffMinutes + "mins" + diffHours + "hrs");
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if(diffDays == 0){
         if(diffHours == 0){
             if (diffMinutes == 0){
                 if (diffSeconds ==0){
@@ -101,6 +122,8 @@ public class Tweet extends BaseModel {
         else return diffHours + " h";
         //dateFormat.format(date);
 
+    }
+        else return diffDays + " d";
     }
 
     public String getImageUrl() {
@@ -139,6 +162,8 @@ public class Tweet extends BaseModel {
             tweet.id = jsonObject.getLong("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+            tweet.favorited = jsonObject.getBoolean("favorited");
+            tweet.retweeted = jsonObject.getBoolean("retweeted");
             //tweet.expandedMediaUrl =
             //Log.d("DEBUG", (jsonObject.getJSONObject("entities")).toString());
                     //.getJSONArray("media")[0]);
