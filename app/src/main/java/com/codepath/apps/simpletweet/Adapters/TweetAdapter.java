@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweet.Activities.DetailActivity;
 import com.codepath.apps.simpletweet.Activities.TimelineActivity;
 import com.codepath.apps.simpletweet.Activities.UserProfileActivity;
+import com.codepath.apps.simpletweet.Fragments.TweetListFragment;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.Utils.PatternEditableBuilder;
 import com.codepath.apps.simpletweet.models.Tweet;
@@ -44,6 +45,7 @@ import static com.codepath.apps.simpletweet.R.id.btnReply;
 
 public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final int simpleTweet= 0, tweetWithImage = 1, tweetWithVideo = 2;
+    RetweetFavoriteListener listener;
     Context context;
     private ArrayList<Tweet> tweets;
     @Override
@@ -74,6 +76,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     public TweetAdapter(Context context, ArrayList<Tweet> tweets) {
+        this.listener = (RetweetFavoriteListener) context;
         this.context = context;
         this.tweets = tweets;
     }
@@ -154,7 +157,16 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 simpleHolder.btnRetweet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if(currentTweet.getRetweeted() == false) {
+                            listener.onRetweet(currentTweet.getId(), true);
+                            currentTweet.setRetweeted(true);
+                            simpleHolder.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_activity_green);
+                        }else {
+                            listener.onRetweet(currentTweet.getId(), false);
+                            currentTweet.setRetweeted(false);
+                            simpleHolder.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_activity);
 
+                        }
                     }
                 });
                 if(currentTweet.getFavorited() == true){
@@ -164,10 +176,12 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     @Override
                     public void onClick(View view) {
                         if(currentTweet.getFavorited() == false) {
+                            listener.onFavorite(currentTweet.getId(), true);
                             currentTweet.setFavorited(true);
                             simpleHolder.btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
 
                         }else {
+                            listener.onFavorite(currentTweet.getId(), false);
                             currentTweet.setFavorited(false);
                             simpleHolder.btnFavorite.setImageResource(R.drawable.ic_vector_heart_activity);
 
@@ -438,5 +452,10 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
 
         }
+    }
+
+    public interface RetweetFavoriteListener {
+        public boolean onRetweet(Long tweetId, boolean postRetweet);
+        public boolean onFavorite(Long tweetId, boolean makeFavorite);
     }
 }

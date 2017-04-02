@@ -21,6 +21,7 @@ import com.codepath.apps.simpletweet.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Collections;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.loopj.android.http.AsyncHttpClient.log;
 
 //import com.codepath.apps.simpletweet.databinding.ActivityTimelineBinding;
@@ -87,9 +89,6 @@ public class TweetListFragment extends Fragment {
 
     }
 
-    public interface TweetListListener {
-        public void tweetClickHandler(String tweetBody);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -168,8 +167,8 @@ public class TweetListFragment extends Fragment {
     public void reloadRecylerView() {
     }
 
-
-    public interface TweetListListner {
+    public interface TweetListListener {
+        public void tweetClickHandler(String tweetBody);
     }
 
 }

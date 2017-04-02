@@ -44,7 +44,7 @@ import static com.codepath.apps.simpletweet.R.id.charactersRemaining;
 import static com.codepath.apps.simpletweet.R.id.replyContainer;
 
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity{
     ActivityDetailBinding binding;
     Long tweetID;
     private TwitterClient client;
@@ -211,4 +211,13 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onRetweet(Long tweetId, boolean postRetweet) {
+        return false;
+    }
+
+    @Override
+    public boolean onFavorite(Long tweetId, boolean makeFavorite) {
+        return false;
+    }
 }

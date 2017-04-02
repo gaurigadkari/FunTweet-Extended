@@ -36,6 +36,7 @@ import android.support.v7.widget.SearchView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
 import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
 import com.codepath.apps.simpletweet.Fragments.HomeTimelineFragment;
 import com.codepath.apps.simpletweet.Fragments.MentionsTimelineFragment;
@@ -63,7 +64,7 @@ import static com.raizlabs.android.dbflow.config.FlowLog.Level.I;
 //import com.astuetz.PagerSlidingTabStrip;
 
 
-public class TimelineActivity extends AppCompatActivity implements ComposeDialogFragment.ComposeTweetListener, TweetListFragment.TweetListListener {
+public class TimelineActivity extends BaseActivity implements ComposeDialogFragment.ComposeTweetListener {
     private ActivityTimelineBinding binding;
     HomeTimelineFragment homeTimelineFragment;
     FragmentPagerAdapter adapterViewPager;
@@ -281,6 +282,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         //TODO get this working
         //tweet(tweetBody);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -288,6 +290,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 2;

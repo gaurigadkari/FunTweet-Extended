@@ -36,7 +36,7 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
     ActivityUserProfileBinding binding;
     private TwitterClient client;
     String screenName;

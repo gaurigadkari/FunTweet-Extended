@@ -24,7 +24,7 @@ import cz.msebera.android.httpclient.Header;
 
 import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseActivity {
     ArrayList<Tweet> tweets  = new ArrayList<>();
     private TweetAdapter tweetAdapter;
     RecyclerView rvTimeline;

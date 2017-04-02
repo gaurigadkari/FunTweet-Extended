@@ -79,8 +79,14 @@ public class TwitterClient extends OAuthBaseClient {
 
         getClient().post(apiUrl, params, handler);
     }
-    public void postRetweet(String replyToUserName, Long tweetId, String tweetBody, AsyncHttpResponseHandler handler){
+    public void postRetweet(Long tweetId, AsyncHttpResponseHandler handler){
         String apiUrl = getApiUrl("statuses/retweet/"+tweetId+".json");
+        RequestParams params = new RequestParams();
+        getClient().post(apiUrl, params, handler);
+    }
+
+    public void postDestroyReTweet(Long tweetId, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("statuses/unretweet/"+tweetId+".json");
         RequestParams params = new RequestParams();
         getClient().post(apiUrl, params, handler);
     }
@@ -144,6 +150,17 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("count",25);
         params.put("since_id", 1);
         params.put("q", query);
+        //params.put("oEmbed");
+        if(loadNext) {
+            params.put("max_id", maxId);
+        }
+        getClient().get(apiUrl,params, handler);
+    }
+    public void getDirectMessages(Boolean loadNext, Long maxId, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("direct_messages.json");
+        RequestParams params = new RequestParams();
+        params.put("count",10);
+        params.put("since_id", 1);
         //params.put("oEmbed");
         if(loadNext) {
             params.put("max_id", maxId);
