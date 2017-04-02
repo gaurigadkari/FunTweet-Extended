@@ -384,73 +384,39 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView tweet, name, screenName, timeCreated;
-        //protected TextView webUrl;
-        protected ImageView profilePic;
+        protected ImageView profilePic, btnReply, btnRetweet, btnFavorite;
         public ViewHolder(View itemView) {
             super(itemView);
             tweet = (TextView) itemView.findViewById(R.id.tweet);
             name = (TextView) itemView.findViewById(R.id.name);
             screenName = (TextView) itemView.findViewById(R.id.screenName);
             timeCreated = (TextView) itemView.findViewById(R.id.time);
-
-            //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
-            profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
-        }
-    }
-    public static class SimpleTweetViewHolder extends ViewHolder {
-        protected TextView tweet, name, screenName, timeCreated;
-        //protected TextView webUrl;
-        protected ImageView profilePic, btnReply, btnRetweet, btnFavorite;
-
-        public SimpleTweetViewHolder(View itemView) {
-            super(itemView);
-            tweet = (TextView) itemView.findViewById(R.id.tweet);
-            name = (TextView) itemView.findViewById(R.id.name);
-            screenName = (TextView) itemView.findViewById(R.id.screenName);
-            timeCreated = (TextView) itemView.findViewById(R.id.time);
-
-            //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
             profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
             btnReply = (ImageView) itemView.findViewById(R.id.btnReply);
             btnRetweet = (ImageView) itemView.findViewById(R.id.btnRetweet);
             btnFavorite = (ImageView) itemView.findViewById(R.id.btnFavorite);
         }
     }
+    public static class SimpleTweetViewHolder extends ViewHolder {
+        public SimpleTweetViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
 
-    public static class TweetImageViewHolder extends RecyclerView.ViewHolder {
-        protected TextView tweet, name, screenName, timeCreated;
-        protected ImageView profilePic, tweetImage;
+    public static class TweetImageViewHolder extends ViewHolder {
+        protected ImageView tweetImage;
 
         public TweetImageViewHolder(View itemView) {
             super(itemView);
-            tweet = (TextView) itemView.findViewById(R.id.tweet);
-            name = (TextView) itemView.findViewById(R.id.name);
-            screenName = (TextView) itemView.findViewById(R.id.screenName);
-            timeCreated = (TextView) itemView.findViewById(R.id.time);
-
-            //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
-            profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
             tweetImage = (ImageView) itemView.findViewById(R.id.image);
-
         }
     }
-    public static class TweetVideoViewHolder extends RecyclerView.ViewHolder {
-        protected TextView tweet, name, screenName, timeCreated;
-        protected ImageView profilePic;
-        protected ImageView tweetVideo;
 
+    public static class TweetVideoViewHolder extends ViewHolder {
+        protected ImageView tweetVideo;
         public TweetVideoViewHolder(View itemView) {
             super(itemView);
-            tweet = (TextView) itemView.findViewById(R.id.tweet);
-            name = (TextView) itemView.findViewById(R.id.name);
-            screenName = (TextView) itemView.findViewById(R.id.screenName);
-            timeCreated = (TextView) itemView.findViewById(R.id.time);
-
-            //webUrl = (TextView) itemView.findViewById(R.id.webUrl);
-            profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
             tweetVideo = (ImageView) itemView.findViewById(R.id.video);
-
-
         }
     }
 
