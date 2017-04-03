@@ -3,8 +3,6 @@ package com.codepath.apps.simpletweet.Activities;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Parcel;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +12,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
-import android.widget.MediaController;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
@@ -28,8 +25,6 @@ import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
 import com.codepath.apps.simpletweet.databinding.ActivityDetailBinding;
 import com.codepath.apps.simpletweet.models.Tweet;
-import com.codepath.apps.simpletweet.models.User;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
@@ -39,9 +34,6 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-
-import static com.codepath.apps.simpletweet.R.id.charactersRemaining;
-import static com.codepath.apps.simpletweet.R.id.replyContainer;
 
 
 public class DetailActivity extends BaseActivity{

@@ -50,7 +50,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.DetailActivity" />
         <activity android:name=".Activities.UserProfileActivity" />
-        <activity android:name=".Activities.SearchActivity"></activity>
+        <activity android:name=".Activities.SearchActivity" />
+        <activity android:name=".Activities.FollowersActivity" />
+        <activity android:name=".Activities.FollowingActivity"></activity>
     </application>
 
 </manifest>

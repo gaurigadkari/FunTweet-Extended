@@ -83,6 +83,21 @@ public class UserProfileActivity extends BaseActivity {
                 TextView birthday = binding.birthday;
                 TextView following = binding.following;
                 TextView followers = binding.followers;
+                followers.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UserProfileActivity.this, FollowersActivity.class);
+                        startActivityForResult(intent,101);
+                    }
+                });
+
+                following.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UserProfileActivity.this, FollowingActivity.class);
+                        startActivityForResult(intent,501);
+                    }
+                });
 
                 try {
                     String profilePicUrl = response.getString("profile_image_url");

@@ -11,6 +11,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.util.ArrayList;
+
 import static com.codepath.apps.simpletweet.R.id.tweetBody;
 
 /*
@@ -176,4 +178,24 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.get(apiUrl, params, handler);
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
+
+
+	public void getFollowersIds(AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("followers/ids.json");
+        RequestParams params = new RequestParams();
+        getClient().get(apiUrl,params, handler);
+    }
+
+    public void getFollowingIds(AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("friends/ids.json");
+        RequestParams params = new RequestParams();
+        getClient().get(apiUrl,params, handler);
+    }
+
+    public void getUserLookup(String userIds, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("users/lookup.json");
+        RequestParams params = new RequestParams();
+        params.put("user_id", userIds);
+        getClient().get(apiUrl,params, handler);
+    }
 }
