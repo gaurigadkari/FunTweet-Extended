@@ -68,8 +68,6 @@ import static com.raizlabs.android.dbflow.config.FlowLog.Level.I;
 
 public class TimelineActivity extends BaseActivity implements ComposeDialogFragment.ComposeTweetListener {
     private ActivityTimelineBinding binding;
-    //MenuItem miActionProgressItem;
-    HomeTimelineFragment homeTimelineFragment;
     FragmentPagerAdapter adapterViewPager;
     Toolbar toolbar;
     private TwitterClient client;
@@ -125,7 +123,6 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
 //        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.your_placeholder, new HomeTimelineFragment(), "HomeTimelineFragment");
 //        ft.commitNow();
-        homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager().findFragmentByTag("HomeTimelineFragment");
         ViewPager vpPager = binding.viewpager;
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
@@ -301,8 +298,34 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
     @Override
     public void tweetClickHandler(String tweetBody) {
         //TODO get this working
-        //tweet(tweetBody);
+        tweet(tweetBody);
+
     }
+
+    public void tweet(String tweetBody) {
+        //client = TwitterApplication.getRestClient();
+//        tweets = new ArrayList<>();
+//        tweetAdapter = new TweetAdapter(this, tweets);
+        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());
+                //tweets.clear();
+                //tweets.add(0, Tweet.fromJson(response));
+                //tweetAdapter.notifyDataSetChanged();
+                MyPagerAdapter.homeTimelineFragment.addTweet(Tweet.fromJson(response));
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
+
+            }
+        });
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -314,7 +337,10 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
 
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
+        
         private static int NUM_ITEMS = 3;
+        public static HomeTimelineFragment homeTimelineFragment;
+        public static MentionsTimelineFragment mentionsTimelineFragment;
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -331,12 +357,13 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return HomeTimelineFragment.newInstance(1, "Home");
+                    homeTimelineFragment = HomeTimelineFragment.newInstance(1, "Home");
+                    return homeTimelineFragment;
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return MentionsTimelineFragment.newInstance(1, "Mentions");
+                    mentionsTimelineFragment = MentionsTimelineFragment.newInstance(1, "Mentions");
+                    return mentionsTimelineFragment;
                 case 2:
                     return DirectMessageFragment.newInstance(1, "DirectMessages");
-
                 default:
                     return null;
             }
