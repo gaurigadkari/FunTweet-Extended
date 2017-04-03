@@ -40,13 +40,22 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] Showing Retweet and Favorite count
+* [x] Implemented Navigation Drawer
+* [x] Added the same icons as that of twitter
+* [x] Coloring theme is similar to twitter
+* [x] Used Glide transformations
+* [x] Added Infinite scroll to all timelines
+* [ ] Started working on implementing camera for compose tweet, could not complete it though :(
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
 https://www.dropbox.com/s/4tplj78v5nnw6vh/Twitter-expanded.mov?dl=0&a=1.gif
+
+Added more features:
+https://www.dropbox.com/s/kbwh13ayvjesbu4/Twitter-Collapse-Number.mp4?dl=0
 
 ## Notes
 
