@@ -153,6 +153,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 });
                 if(currentTweet.getRetweeted() == true){
                     simpleHolder.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_activity_green);
+                    simpleHolder.retweetCount.setText(currentTweet.getRetweetCount()+"");
                 }
                 simpleHolder.btnRetweet.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -161,6 +162,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                             listener.onRetweet(currentTweet.getId(), true);
                             currentTweet.setRetweeted(true);
                             simpleHolder.btnRetweet.setImageResource(R.drawable.ic_vector_retweet_activity_green);
+                            simpleHolder.retweetCount.setText(currentTweet.getRetweetCount()+"");
                         }else {
                             listener.onRetweet(currentTweet.getId(), false);
                             currentTweet.setRetweeted(false);
@@ -171,6 +173,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 });
                 if(currentTweet.getFavorited() == true){
                     simpleHolder.btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
+                    simpleHolder.favoriteCount.setText(currentTweet.getFavoriteCount()+"");
                 }
                 simpleHolder.btnFavorite.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -179,6 +182,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                             listener.onFavorite(currentTweet.getId(), true);
                             currentTweet.setFavorited(true);
                             simpleHolder.btnFavorite.setImageResource(R.drawable.ic_action_heart_on_default);
+                            simpleHolder.favoriteCount.setText(currentTweet.getFavoriteCount()+"");
 
                         }else {
                             listener.onFavorite(currentTweet.getId(), false);
@@ -383,8 +387,9 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         return -1;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected TextView tweet, name, screenName, timeCreated;
+        protected TextView tweet, name, screenName, timeCreated, retweetCount, favoriteCount;
         protected ImageView profilePic, btnReply, btnRetweet, btnFavorite;
+
         public ViewHolder(View itemView) {
             super(itemView);
             tweet = (TextView) itemView.findViewById(R.id.tweet);
@@ -395,7 +400,9 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             btnReply = (ImageView) itemView.findViewById(R.id.btnReply);
             btnRetweet = (ImageView) itemView.findViewById(R.id.btnRetweet);
             btnFavorite = (ImageView) itemView.findViewById(R.id.btnFavorite);
-        }
+            retweetCount = (TextView) itemView.findViewById(R.id.retweetCount);
+            favoriteCount = (TextView) itemView.findViewById(R.id.favoriteCount);
+         }
     }
     public static class SimpleTweetViewHolder extends ViewHolder {
         public SimpleTweetViewHolder(View itemView) {

@@ -56,6 +56,7 @@ public class TweetListFragment extends Fragment {
     MenuItem miActionProgressItem;
     ProgressBar progressBar;
     public void addAllTweetsDB(ArrayList<Tweet> tweetsDB) {
+        tweets.clear();
         tweets.addAll(tweetsDB);
         Collections.reverse(tweets);
         tweetAdapter.notifyDataSetChanged();
