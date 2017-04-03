@@ -76,6 +76,7 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     User user;
+    Long mediaId = Long.valueOf(1);
     //ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,17 +297,32 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
 //        miActionProgressItem.setVisible(false);
 //    }
     @Override
-    public void tweetClickHandler(String tweetBody) {
+    public void tweetClickHandler(String tweetBody, String path, boolean hasMedia) {
         //TODO get this working
-        tweet(tweetBody);
+        tweet(tweetBody, path, hasMedia);
 
     }
 
-    public void tweet(String tweetBody) {
+    public void tweet(String tweetBody, String path, boolean hasMedia) {
+
+        if(hasMedia){
+            client.uploadMedia(path, new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    try {
+                        mediaId = response.getLong("media_id");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
         //client = TwitterApplication.getRestClient();
 //        tweets = new ArrayList<>();
 //        tweetAdapter = new TweetAdapter(this, tweets);
-        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
+        client.postTweet(tweetBody,hasMedia, mediaId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());

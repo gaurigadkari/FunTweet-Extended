@@ -151,26 +151,26 @@ public class HomeTimelineFragment extends TweetListFragment {
         //client = TwitterApplication.getRestClient();
 //        tweets = new ArrayList<>();
 //        tweetAdapter = new TweetAdapter(this, tweets);
-        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());
-                //tweets.clear();
-                //tweets.add(0, Tweet.fromJson(response));
-                //tweetAdapter.notifyDataSetChanged();
-                addTweet(Tweet.fromJson(response));
-                hideProgressBar();
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
-                hideProgressBar();
-
-            }
-        });
+//        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());
+//                //tweets.clear();
+//                //tweets.add(0, Tweet.fromJson(response));
+//                //tweetAdapter.notifyDataSetChanged();
+//                addTweet(Tweet.fromJson(response));
+//                hideProgressBar();
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
+//                hideProgressBar();
+//
+//            }
+//        });
     }
     public static HomeTimelineFragment newInstance(int page, String title) {
         HomeTimelineFragment fragmentFirst = new HomeTimelineFragment();

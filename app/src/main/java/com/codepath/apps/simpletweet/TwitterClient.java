@@ -65,11 +65,14 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl,params, handler);
 	}
 
-	public void postTweet(String tweetBody, AsyncHttpResponseHandler handler){
+	public void postTweet(String tweetBody, boolean media, Long mediaId, AsyncHttpResponseHandler handler){
         String apiUrl = getApiUrl("statuses/update.json");
         RequestParams params = new RequestParams();
         params.put("status",tweetBody);
+        if(media) {
+            params.put("media_ids",mediaId);
 
+        }
         getClient().post(apiUrl, params, handler);
     }
     public void postReplyTweet(String replyToUserName, Long tweetId, String tweetBody, AsyncHttpResponseHandler handler){
@@ -197,5 +200,11 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("user_id", userIds);
         getClient().get(apiUrl,params, handler);
+    }
+    public void uploadMedia(String mediaPath, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("media/upload.json");
+        RequestParams params = new RequestParams();
+        params.put("media", mediaPath);
+        getClient().post(apiUrl,params, handler);
     }
 }

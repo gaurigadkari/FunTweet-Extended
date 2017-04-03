@@ -1,6 +1,7 @@
 package com.codepath.apps.simpletweet.Fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+
+import static com.codepath.apps.simpletweet.R.id.coordinatorLayout;
 
 /**
  * Created by Gauri Gadkari on 3/30/17.
@@ -59,9 +62,9 @@ public class MentionsTimelineFragment extends TweetListFragment {
             if(!(Utilities.isNetworkAvailable(getContext()) && Utilities.isOnline())) {
             ArrayList<Tweet> tweetList = (ArrayList<Tweet>) SQLite.select().
                     from(Tweet.class).queryList();
-
+                Snackbar.make(rvTimeline, "No Network, please connect to the internet", Snackbar.LENGTH_LONG).show();
             //tweets.clear();
-            addAllTweetsDB(tweetList);
+            //addAllTweetsDB(tweetList);
             //tweets.addAll(tweetList);
             //Collections.reverse(tweets);
             //tweetAdapter.notifyDataSetChanged();
@@ -96,24 +99,24 @@ public class MentionsTimelineFragment extends TweetListFragment {
         //client = TwitterApplication.getRestClient();
 //        tweets = new ArrayList<>();
 //        tweetAdapter = new TweetAdapter(this, tweets);
-        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());
-                //tweets.clear();
-                //tweets.add(0, Tweet.fromJson(response));
-                //tweetAdapter.notifyDataSetChanged();
-                addTweet(Tweet.fromJson(response));
-
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
-
-            }
-        });
+//        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Log.d(TimelineActivity.class.getName(), "Post Tweet " + response.toString());
+//                //tweets.clear();
+//                //tweets.add(0, Tweet.fromJson(response));
+//                //tweetAdapter.notifyDataSetChanged();
+//                addTweet(Tweet.fromJson(response));
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
+//
+//            }
+//        });
     }
     public static MentionsTimelineFragment newInstance(int page, String title) {
         MentionsTimelineFragment mentionsTimelineFragment = new MentionsTimelineFragment();
