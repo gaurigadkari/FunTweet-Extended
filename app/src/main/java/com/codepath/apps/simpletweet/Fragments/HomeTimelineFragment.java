@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.simpletweet.Activities.TimelineActivity;
 import com.codepath.apps.simpletweet.R;
@@ -56,6 +59,7 @@ public class HomeTimelineFragment extends TweetListFragment {
             }
 
         });
+
         populateTimeline();
 
     }
@@ -95,6 +99,8 @@ public class HomeTimelineFragment extends TweetListFragment {
             //swipeContainer.setRefreshing(false);
 
         } else {
+            //timelineActivity.
+            //showProgressBar();
             client.getHomeTimeline(false, Long.valueOf(1), new JsonHttpResponseHandler() {
                 //Success
 
@@ -102,6 +108,7 @@ public class HomeTimelineFragment extends TweetListFragment {
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     Log.d(TimelineActivity.class.getName(), "Populate timeline " + response.toString());
                     addAllTweets(Tweet.fromJSONArray(response), false);
+                    //hideProgressBar();
 //                    tweets.clear();
 //                    tweetAdapter.notifyDataSetChanged();
 //                    tweets.addAll(Tweet.fromJSONArray(response));
@@ -114,12 +121,33 @@ public class HomeTimelineFragment extends TweetListFragment {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorObj) {
                     //Log.d("DEBUG", "Populate timeline Error" + errorObj.toString());
+                    //hideProgressBar();
                 }
             });
         }
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Extract the action-view from the menu item
+        progressBar =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+
+    }
+
+    public void showProgressBar() {
+        // Show progress item
+        //miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        //miActionProgressItem.setVisible(false);
+    }
+
     public void tweet(String tweetBody) {
+        showProgressBar();
         //client = TwitterApplication.getRestClient();
 //        tweets = new ArrayList<>();
 //        tweetAdapter = new TweetAdapter(this, tweets);
@@ -131,6 +159,7 @@ public class HomeTimelineFragment extends TweetListFragment {
                 //tweets.add(0, Tweet.fromJson(response));
                 //tweetAdapter.notifyDataSetChanged();
                 addTweet(Tweet.fromJson(response));
+                hideProgressBar();
 
 
             }
@@ -138,6 +167,7 @@ public class HomeTimelineFragment extends TweetListFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d(TimelineActivity.class.getName(), "Post Tweet Error " + errorResponse.toString());
+                hideProgressBar();
 
             }
         });

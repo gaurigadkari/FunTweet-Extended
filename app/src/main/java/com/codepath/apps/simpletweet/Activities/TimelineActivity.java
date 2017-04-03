@@ -30,6 +30,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.support.v7.widget.SearchView;
@@ -38,6 +39,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
 import com.codepath.apps.simpletweet.DialogFragments.ComposeDialogFragment;
+import com.codepath.apps.simpletweet.Fragments.DirectMessageFragment;
 import com.codepath.apps.simpletweet.Fragments.HomeTimelineFragment;
 import com.codepath.apps.simpletweet.Fragments.MentionsTimelineFragment;
 import com.codepath.apps.simpletweet.Fragments.TweetListFragment;
@@ -66,6 +68,7 @@ import static com.raizlabs.android.dbflow.config.FlowLog.Level.I;
 
 public class TimelineActivity extends BaseActivity implements ComposeDialogFragment.ComposeTweetListener {
     private ActivityTimelineBinding binding;
+    //MenuItem miActionProgressItem;
     HomeTimelineFragment homeTimelineFragment;
     FragmentPagerAdapter adapterViewPager;
     Toolbar toolbar;
@@ -75,6 +78,7 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     User user;
+    //ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -276,7 +280,24 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
         composeDialogFragment.show(fm, "fragment_edit_name");
     }
 
-
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        // Store instance of the menu item containing progress
+//        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+//        // Extract the action-view from the menu item
+//        progressBar =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+//        // Return to finish
+//        return super.onPrepareOptionsMenu(menu);
+//    }
+//    public void showProgressBar() {
+//        // Show progress item
+//        miActionProgressItem.setVisible(true);
+//    }
+//
+//    public void hideProgressBar() {
+//        // Hide progress item
+//        miActionProgressItem.setVisible(false);
+//    }
     @Override
     public void tweetClickHandler(String tweetBody) {
         //TODO get this working
@@ -293,7 +314,7 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
 
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 2;
+        private static int NUM_ITEMS = 3;
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -313,6 +334,9 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
                     return HomeTimelineFragment.newInstance(1, "Home");
                 case 1: // Fragment # 0 - This will show FirstFragment different title
                     return MentionsTimelineFragment.newInstance(1, "Mentions");
+                case 2:
+                    return DirectMessageFragment.newInstance(1, "DirectMessages");
+
                 default:
                     return null;
             }
@@ -326,6 +350,8 @@ public class TimelineActivity extends BaseActivity implements ComposeDialogFragm
                     return "Home";
                 case 1:
                     return "Mentions";
+                case 2:
+                    return "Messages";
             }
             return "Page " + position;
         }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
 import com.codepath.apps.simpletweet.Fragments.TweetListFragment;
+import com.codepath.apps.simpletweet.Fragments.UserTimelineFragement;
 import com.codepath.apps.simpletweet.R;
 import com.codepath.apps.simpletweet.TwitterApplication;
 import com.codepath.apps.simpletweet.TwitterClient;
@@ -54,16 +55,16 @@ public class UserProfileActivity extends BaseActivity {
         screenName = intent.getStringExtra("screenName");
         getUserInfo(screenName);
         tweetAdapter = new TweetAdapter(this, tweets);
-        rvTimeline = (RecyclerView) findViewById(R.id.userTimeline);
-        rvTimeline.setAdapter(tweetAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+//        rvTimeline = (RecyclerView) findViewById(R.id.userTimeline);
+//        rvTimeline.setAdapter(tweetAdapter);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+//
+//        rvTimeline.setLayoutManager(linearLayoutManager);
 
-        rvTimeline.setLayoutManager(linearLayoutManager);
-
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.your_placeholder, new TweetListFragment());
-//        ft.commit();
-        populateUserTimeline(screenName);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.your_placeholder, UserTimelineFragement.newInstance(screenName, 0, "User Timeline"));
+        ft.commit();
+        //populateUserTimeline(screenName);
     }
 
     public void getUserInfo(String screenName){

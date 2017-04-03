@@ -3,13 +3,17 @@ package com.codepath.apps.simpletweet.Fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.simpletweet.Activities.TimelineActivity;
 import com.codepath.apps.simpletweet.Adapters.TweetAdapter;
@@ -47,6 +51,10 @@ public class TweetListFragment extends Fragment {
     private static final String STATE_ITEMS = "items";
     RecyclerView rvTimeline;
     private TwitterClient client;
+    Activity activity;
+    TimelineActivity timelineActivity;
+    MenuItem miActionProgressItem;
+    ProgressBar progressBar;
     public void addAllTweetsDB(ArrayList<Tweet> tweetsDB) {
         tweets.addAll(tweetsDB);
         Collections.reverse(tweets);
@@ -90,6 +98,7 @@ public class TweetListFragment extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
@@ -97,9 +106,21 @@ public class TweetListFragment extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Extract the action-view from the menu item
+        progressBar =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //final TimelineActivity activity = (TimelineActivity) getActivity();
-        final Activity activity = getActivity();
+        activity = getActivity();
+
+        //timelineActivity = (TimelineActivity) getActivity();
+
 
         tweetAdapter = new TweetAdapter(activity, tweets);
 //        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
