@@ -3,6 +3,7 @@ package com.codepath.apps.simpletweet.Activities;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,6 +66,9 @@ public class UserProfileActivity extends BaseActivity {
         ft.replace(R.id.your_placeholder, UserTimelineFragement.newInstance(screenName, 0, "User Timeline"));
         ft.commit();
         //populateUserTimeline(screenName);
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle("Profile");
     }
 
     public void getUserInfo(String screenName){
