@@ -45,7 +45,7 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-
+https://www.dropbox.com/s/4tplj78v5nnw6vh/Twitter-expanded.mov?dl=0&a=1.gif
 
 ## Notes
 
