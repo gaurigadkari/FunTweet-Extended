@@ -6,11 +6,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp">
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tweetDetail">
 
             <ImageView
                 android:id="@+id/profilePic"
@@ -57,12 +60,13 @@
                 android:layout_toRightOf="@id/profilePic"
                 android:autoLink="all"
                 android:textSize="14sp" />
+        </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tweet"
+                android:layout_below="@id/tweetDetail"
                 android:layout_margin="4dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="90dp">
@@ -89,12 +93,12 @@
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_vector_heart_activity" />
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/btnDirectMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_action_dm_default" />
+                    app:srcCompat="@drawable/ic_action_dm_default" />-->
             </LinearLayout>
         </RelativeLayout>
 

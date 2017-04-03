@@ -56,6 +56,44 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/video"
                 android:layout_below="@id/profilePic"/>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/video"
+                android:layout_margin="4dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="90dp">
+
+                <ImageView
+                    android:id="@+id/btnReply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_reply_activity"
+                    android:text="@string/reply" />
+
+                <ImageView
+                    android:id="@+id/btnRetweet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_retweet_activity" />
+
+                <ImageView
+                    android:id="@+id/btnFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_heart_activity" />
+
+                <!--<ImageView
+                    android:id="@+id/btnDirectMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_action_dm_default" />-->
+            </LinearLayout>
         </RelativeLayout>
 
 
