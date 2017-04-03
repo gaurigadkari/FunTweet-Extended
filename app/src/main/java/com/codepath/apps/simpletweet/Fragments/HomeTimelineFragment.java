@@ -91,7 +91,7 @@ public class HomeTimelineFragment extends TweetListFragment {
 
             //tweets.clear();
             addAllTweetsDB(tweetList);
-            Snackbar.make(coordinatorLayout, "No Network, please connect to the internet", Snackbar.LENGTH_LONG);
+            Snackbar.make(coordinatorLayout, "No Network, please connect to the internet", Snackbar.LENGTH_LONG).show();
 
             //tweets.addAll(tweetList);
             //Collections.reverse(tweets);

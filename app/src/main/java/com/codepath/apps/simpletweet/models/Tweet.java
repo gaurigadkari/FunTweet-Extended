@@ -52,6 +52,15 @@ public class Tweet extends BaseModel {
     public String createdAt;
     @Column
     public String expandedMediaUrl = "";
+    int retweetCount, favoriteCount;
+
+    public int getRetweetCount() {
+        return retweetCount;
+    }
+
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
 
     public Boolean getFavorited() {
         return favorited;
@@ -164,6 +173,8 @@ public class Tweet extends BaseModel {
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
             tweet.favorited = jsonObject.getBoolean("favorited");
             tweet.retweeted = jsonObject.getBoolean("retweeted");
+            tweet.favoriteCount = jsonObject.getInt("favorite_count");
+            tweet.retweetCount = jsonObject.getInt("retweet_count");
             //tweet.expandedMediaUrl =
             //Log.d("DEBUG", (jsonObject.getJSONObject("entities")).toString());
                     //.getJSONArray("media")[0]);
