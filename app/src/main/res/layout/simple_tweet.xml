@@ -14,12 +14,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tweetDetail">
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/retweetDetails"
+                android:visibility="gone"/>
             <ImageView
                 android:id="@+id/profilePic"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:layout_below="@id/retweetDetails"/>
 
             <TextView
                 android:id="@+id/name"
@@ -27,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/profilePic"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_below="@id/retweetDetails"/>
 
             <TextView
                 android:id="@+id/screenName"

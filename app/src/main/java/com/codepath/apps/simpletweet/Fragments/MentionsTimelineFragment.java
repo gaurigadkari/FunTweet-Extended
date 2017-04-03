@@ -33,7 +33,7 @@ public class MentionsTimelineFragment extends TweetListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
-
+        String title = getArguments().getString("someTitle","");
 
     }
 
